@@ -15,7 +15,7 @@ let routes = [
     meta: {
         title: '首页'
     },
-    component:(resolve) => require (['../views/index'],resolve),
+    component:(resolve) => require (['views/index'],resolve),
     name: '首页',
     children:[
         {
@@ -23,7 +23,7 @@ let routes = [
             meta: {
                 title:'主页'
             },
-            component:(resolve) => require (['../views/Home'],resolve),
+            component:(resolve) => require (['views/Home'],resolve),
             name:'主页'
         },
         {
@@ -31,7 +31,14 @@ let routes = [
             meta: {
                 title: '分类',
             },
-            component:(resolve) => require(['../views/Sort'],resolve)
+            component:(resolve) => require(['views/Sort'],resolve)
+        },
+        {
+            path:'order',
+            meta: {
+                title:'订单详情'
+            },
+            component:(resolve) => require(['views/order'],resolve)
         }
     ]
     },
@@ -41,19 +48,19 @@ let routes = [
       meta: {
           title: '用户'
       },
-      component:(resolve) => require (['../views/User/index'],resolve),
+      component:(resolve) => require (['views/User/index'],resolve),
       name: '用户',
       redirect:'/user/login',
       children:[
             {
                 path:'login',
                 meta:{title:'登录'},
-                component:(resolve) => require(['../views/User/login'],resolve),
+                component:(resolve) => require(['views/User/login'],resolve),
             },
             {
                 path:'reg',
                 meta:{title:'注册'},
-                component:(resolve) => require(['../views/User/register'],resolve),
+                component:(resolve) => require(['views/User/register'],resolve),
             }
       ],
     },

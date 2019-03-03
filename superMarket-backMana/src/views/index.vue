@@ -76,7 +76,14 @@ export default {
                     icon: 'neiye-zhijieshenhe',
                     path: '/sort',
                     params: {},
-                    children: []
+                    children: [
+                        {
+                            text:'订单详情',
+                            path:'order',
+                            title:'商品详情',
+                            params:{}
+                        }
+                    ]
                 }
             ]
         };
