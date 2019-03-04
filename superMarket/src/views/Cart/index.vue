@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <Cart></Cart>
     <!-- <router-view/> -->
   </div>

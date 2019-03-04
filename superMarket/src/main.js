@@ -5,6 +5,9 @@ import App from './App'
 import routes from './router'
 import VueRouter from 'vue-router';
 import store from './vuex/index'
+import { Icon } from 'vant';
+
+Vue.use(Icon)
 Vue.use(VueRouter);
 Vue.config.productionTip = false;
 //字体图标
@@ -15,11 +18,6 @@ import './styles/common/base.css';
 import MintUI from 'mint-ui';
 import 'mint-ui/lib/style.css';
 Vue.use(MintUI)
-
-//引用element-ui
-import Element from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(Element)
 
 const router = new VueRouter({
   routes

@@ -1,15 +1,8 @@
 {
   "presets": [["es2015", { "modules": false }]],
   "plugins": [
-    ["component",
-      [{
-        "libraryName": "mint-ui",
-        "style": true
-      },
-        {
-          "libraryName": "element-ui",
-          "styleLibraryName": "theme-chalk"
-        }]
-    ]
+    "transform-vue-jsx", 
+    "transform-runtime",
+    ["import",{"libraryName":"vant","style":true}]
   ]
 }

@@ -6,7 +6,9 @@
         <label class=" check-label" :for="forId(ind)">
           <input type="checkbox" :id="forId(ind)" class="checkbox" :checked="item.isBuy" @change="ischeckbox(item)">
           <i class="iconfont icon-check circle"></i>
+          <!-- <van-checkbox v-model="checked" checked-color="#e4393c" @change="ischeckbox(item)"></van-checkbox> -->
         </label>
+
         <div class="self-img">
           <img src="http://image.chijiayd.com/group1/M00/09/94/rBJ8J1xmitGAK5qrAASKuu_CH_8924.jpg" alt="">
         </div>
@@ -27,18 +29,17 @@
                         <mt-button type="default" size="small" @click="addCart(item)">+</mt-button>
                     </li>
               </ul>
-              <span class="iconfont icon-laji"></span>
+              <!-- <van-icon name="delete" class="icon-laji"/> -->
+              <i class="iconfont icon-laji"></i>
           </div>
         </div>
       </div>
     </div>
     <div class="cart-footer">
       <div class="all-warp">
-        <label class=" check-label" for="allCheckbox">
-          <input type="checkbox" id="allCheckbox" class="checkbox" @change="allCheckbox($event)" v-model="allCheckBox">
-          <i class="iconfont icon-check circle"></i>
+        <label class=" " for="allCheckbox">
+          <van-checkbox v-model="checked" checked-color="#e4393c" @change="allCheckbox">全选</van-checkbox>
         </label>
-        <label for="allCheckbox">全选</label>
       </div>
       <div class="count-warp">
         <h3>
@@ -49,18 +50,25 @@
       </div>
       <div class="pay">去结算({{totall}})</div>
     </div>
+
   </div>
 </template>
 
 <script>
 import Toback from '../../components/Toback';
+import { Swipe,SwipeItem,Button ,Checkbox} from "vant"
 export default {
   name: 'cart',
-  components: {Toback},
+  components:{
+         [Button.name]:Button,
+         [Checkbox.name]:Checkbox,
+         Checkbox,
+         Toback
+  },
   data() {
     return {
       title:'购物车',
-      checked:true,
+      checked:false,
       allCheckBox:false,
       totall:0,
       totallMonay:0,
@@ -150,6 +158,7 @@ export default {
       .showCar{
           display: inline-flex;
           height: rem(23);
+          line-height: rem(23);
           width:2rem;
           border: 1px solid #ccc;
           border-radius: .066667rem;
