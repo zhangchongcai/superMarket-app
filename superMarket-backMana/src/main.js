@@ -7,6 +7,10 @@ import VueRouter from 'vue-router';
 import store from './vuex';
 import axios from 'axios';
 import api from './http';
+import Elemnt from 'element-ui';
+// import 'mint-ui/lib/style.css';
+
+Vue.use(Elemnt)
 
 import {
   MessageBox,

@@ -1,8 +1,8 @@
-function sendData(err,msg,data){
+function sendData(err,msg,data,code){
     return {
-        err:err,
+        code:code,
         msg:msg,
-        data:data
+        data:data,
     }
 }
 module.exports = {sendData}

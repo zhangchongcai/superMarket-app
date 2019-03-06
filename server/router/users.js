@@ -52,9 +52,9 @@ Router.post('/log',(req,res)=>{
         .then((resolve)=>{
             // console.log(resolve)
             if(resolve){
-                res.send(util.sendData(1,'登陆成功',null));
+                res.send(util.sendData(1,'登陆成功',true));
             }else{
-                res.send(util.sendData(-1,'登陆失败',null));
+                res.send(util.sendData(-1,'登陆失败',false));
             }
             
         }).catch((err)=>{
@@ -86,6 +86,7 @@ Router.post('/reg',(req,res)=>{
             res.send(util.sendData(1,'注册成功',null));
         }).catch((err)=>{
             res.send(util.sendData(-1,'注册失败',null));
+            console.log(err)
         });
         
     }else{

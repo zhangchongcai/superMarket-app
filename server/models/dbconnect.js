@@ -1,5 +1,5 @@
 const mongose = require("mongoose");
-mongose.connect('mongodb://localhost:27017/cankao',{useNewUrlParser:true});
+mongose.connect('mongodb://47.101.203.0:27017/supermarkets',{useNewUrlParser:true});
 let db = mongose.connection;
 db.on('error',()=>{
     console.log('connection error!');

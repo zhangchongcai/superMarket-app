@@ -41,12 +41,49 @@ export default {
         login(){
             console.log(this.userName)
             console.log(this.userPassword)
+            this.$api.login({"userName":this.userName,"userPass":this.userPassword})
+            .then( data => {
+                console.log(data)
+                if (data && data === 200) {
+                    if(data.data) {
+                        this.$message({
+                            message: data.msg,
+                            type: 'success',
+                            duration: 1000,
+                            onClose: () => {
+                                this.$router.push('/')
+                            }
+                        })
+                    }else{
+                        this.$message({
+                            message: data.msg,
+                            type: 'error',
+                            duration: 1000,
+                            onClose: () => {
+                                this.$router.push('/')
+                            }
+                        })
+                    }
+                } else {
+                    this.$message({
+                        message: '操作失败！',
+                        type: 'failed',
+                        duration: 1000,
+                        onClose: () => {
+                        }
+                    })
+                }
+            }).catch( err => {
+                console.log(err)
+            })
         },
         toReg(){
             this.$router.push('/user/reg')
         }
+        
     },
     created() {
+        
     },
     
 }

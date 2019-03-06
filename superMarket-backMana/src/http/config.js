@@ -16,25 +16,11 @@ console.log(domain)
 switch (domain) {
     case '127.0.0.1': 
         config.baseURL = 'http://192.168.100.122:8082'
-        // config.baseURL = 'http://http://192.168.100.222:8082'
         break;
     case '192.168.100.222': 
         config.baseURL = 'http://192.168.100.222:8082';
         break;
-    case '192.168.102.147':
-        config.baseURL = 'http://192.168.102.147:8082';
-        break;
-    case '192.168.100.148':
-        // 曾宇发 node地址
-        config.baseURL = 'http://192.168.100.148:9006/api';
-        break;
-    case '127.0.0.1':
-        config.baseURL = 'http://192.168.100.122:8082';
-        break;
     default:
-        // config.baseURL = 'http://127.0.0.1:9006/';
-        config.baseURL = 'http://192.168.100.38:8082';
-        // config.baseURL = 'http://192.168.100.122:8082';
-        // config.baseURL = 'http://192.168.100.23:8082';
+        config.baseURL = 'http://127.0.0.1:5000';
 }
 export default config;
