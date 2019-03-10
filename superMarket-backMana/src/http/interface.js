@@ -4,18 +4,18 @@ import axios from './api';
  * 如果项目很大可以将 URL 独立成文件，接口分成不同的模块
  */
 /**接口处理示例 */
-export const testGet = (params) => {
+export const newPingAdd = (data) => {
     //接口备注
     return axios({
-        url: '/getApi',
-        method: 'get',
-        params
+        url: '/api/newPing/add',
+        method: 'post',
+        data
     });
 };
 
-export const testPost = data => {
+export const newPingList = data => {
     return axios({
-        url: '/postApi',
+        url: '/api/newPing/list',
         method: 'post',
         data
     })
@@ -31,8 +31,11 @@ export const login = data => {
 
 export default {
     //****end */
-    testGet,
-    testPost,
     login,
+
+//商品管理
+    //新品
+    newPingList,
+    newPingAdd,
 
 };

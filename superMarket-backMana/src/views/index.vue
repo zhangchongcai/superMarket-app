@@ -19,7 +19,7 @@
     </el-container> -->
     <el-container class="main-container">
         <el-aside :width="this.isCollapse ? '60px' : '136px'">
-            <h1 class="project-title">慧影云</h1>
+            <h1 class="project-title">超市后台</h1>
             <Menu
                 :collapsed="isCollapse"
                 :items="item"
@@ -51,7 +51,7 @@ export default {
             isCollapse: false,
             item: [
                 {
-                    text: "影票",
+                    text: "主页",
                     icon: "neiye-zhijieshenhe",
                     path: "/home",
                     params: {},
@@ -62,29 +62,49 @@ export default {
                             title: '总部影片管理',
                             params: {}
                         },
-                        {
-                            text: '影片资料管理',
-                            path: '/CTM/Film_manage/cinema_stock/list',
-                            title: '影片资料管理',
-                            params: {}
-                        },
                     ]
                     
                 },
                 {
-                    text: '商品分类',
+                    text: '商品数据管理',
                     icon: 'neiye-zhijieshenhe',
-                    path: '/sort',
+                    path: '/',
                     params: {},
                     children: [
                         {
-                            text:'订单详情',
-                            path:'order',
-                            title:'商品详情',
+                            text:'新品管理',
+                            path:'/goodsmana/newproducts/list',
+                            title:'新品管理',
+                            params:{}
+                        },{
+                            text:'海外管理',
+                            path:'/goodsmana/importproducts/list',
+                            title:'海外管理',
                             params:{}
                         }
                     ]
-                }
+                },
+                {
+                    text: '分类管理',
+                    icon: 'neiye-zhijieshenhe',
+                    path: '/',
+                },
+                {
+                    text: '图片管理',
+                    icon: 'neiye-zhijieshenhe',
+                    path: '/',
+                },
+                {
+                    text: '收藏管理',
+                    icon: 'neiye-zhijieshenhe',
+                    path: '/',
+                },
+                {
+                    text: '数据统计',
+                    icon: 'neiye-zhijieshenhe',
+                    path: '/',
+                },
+               
             ]
         };
     },

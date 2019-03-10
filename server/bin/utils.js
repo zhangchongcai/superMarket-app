@@ -1,4 +1,4 @@
-function sendData(err,msg,data,code){
+function sendData(code,msg,data){
     return {
         code:code,
         msg:msg,

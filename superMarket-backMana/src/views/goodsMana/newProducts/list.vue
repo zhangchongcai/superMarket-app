@@ -2,29 +2,11 @@
     <div class="cinemaList">
 		<div class="searchAdition">
 			<el-form :inline="true"  class="demo-form-inline search-form" size="small">
-				<el-form-item label="内部管理编号:">
+				<el-form-item label="Id:">
 					<el-input v-model="searchAdition.mgCode"></el-input>
 				</el-form-item>
-				<el-form-item label="影院编码:">
-					<el-input v-model="searchAdition.code"></el-input>
-				</el-form-item>
-				<el-form-item label="影院名称:">
-					<el-input v-model="searchAdition.name"></el-input>
-				</el-form-item>
-				<el-form-item label="影院联系人:">
-					<el-input v-model="searchAdition.contactMan"></el-input>
-				</el-form-item>
-				<el-form-item label="手机号码:">
-					<el-input v-model="searchAdition.mphone"></el-input>
-				</el-form-item>
-				<el-form-item label="状态" >
-				<el-select v-model="searchAdition.status">
-					<el-option label="全部" value="">全部</el-option>
-					<el-option label="有效" value="1">营业</el-option>
-					<el-option label="无效" value="2">测试</el-option>
-					</el-select>
-				</el-form-item>
 				<el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+				<el-button type="primary" @click="insearch" icon="el-icon-search">插入</el-button>
 			</el-form>
 		</div>
 		<div class="content">			
@@ -32,51 +14,52 @@
 				<el-table
 				:data="tableData"
 				stripe
+				ref="multipleTable"
+				@selection-change="handleSelectionChange"
+				v-loading="!list"
 				>
 					<el-table-column
-					prop="mgCode"
-					label="内部管理编号"
-					show-overflow-tooltip
-					>
+					type="selection"
+					width="55">
 					</el-table-column>
 					<el-table-column
-					prop="code"
-					label="影院编码"
+					prop="catId"
+					label="id"
 					show-overflow-tooltip
 					>
 					</el-table-column>
 					<el-table-column
 					prop="name"
-					label="影院名称"
+					label="商品名称"
 					show-overflow-tooltip
 					>
 					</el-table-column>
 					<el-table-column
-					prop="areaName"
-					label="所在城市"
+					prop="url"
+					label="url"
 					show-overflow-tooltip
 					>
 					</el-table-column>
 					<el-table-column
-					prop="contactMan"
-					label="联系人"
+					prop="price"
+					label="价格"
+					show-overflow-tooltip
+					>
+					</el-table-column>
+					<el-table-column
+					prop="totalStore"
+					label="数量"
 					show-overflow-tooltip
 					>
 					</el-table-column>
                     <el-table-column
-					prop="mphone"
-					label="手机号码"
-					show-overflow-tooltip
-					>
-					</el-table-column>
-                    <el-table-column
-					prop="status"
-					label="状态"
-					:formatter = "stateFormat"
+					prop="typeName"
+					label="类型"
 					show-overflow-tooltip
 					>
 					</el-table-column>
 					<el-table-column
+					
 					label="操作"
 					show-overflow-tooltip
 					>
@@ -131,7 +114,8 @@
 						contactMan:"",
 						mphone:"",
 						status:"",
-					}
+					},
+				list:null,
 			}
         } ,
 		methods : {
@@ -145,13 +129,8 @@
 				})
 			},
 			//影厅管理
-			wall_edit(uid){
-				this.$router.push({
-					path:'/CTM/cinemawall/list',
-					query:{
-						cinemaUid:uid
-					}
-				})
+			handleSelectionChange(item){
+				console.log(item)
 			},
 			//状态
 			stateFormat(row, column) {
@@ -163,20 +142,43 @@
 			},
 			//查询
 			search(){
-				this.getList();
+				// this.getList();
+				this.list.forEach(item => {
+				this.axios.get('/apis/goods/queryDetailGoods/'+item.goodsId)
+				.then(data => {
+					data = data.data.data;
+					let imageList = [];
+					data.imageList.forEach(item => {
+						imageList.push(item.url)
+					})
+					item.imageList = imageList;
+					item.score = data.product.score;
+					item.bn = data.product.bn;
+					item.goodsPoint = data.product.goodsPoint;
+					item.brand = data.product.brand;
+					console.log(item)
+				})
+			})
+			},
+			insearch() {
+				this.$api.newPingAdd(this.list)
+				.then(data=> {
+					console.log(data)
+				})
 			},
 			//获取列表数据
 				getList(){
 					let limit = {
 						'page': this.current,
-						'pageSize':this.pageSize 
+						'limit':this.pageSize 
 					}
 					let addition = this.searchAdition;
-					this.$api.cinemaList(limit,addition).then( data => {
+					this.$api.newPingList(limit,addition).then( data => {
 						if (data && data.code === 200) {
-							this.tableData = data.data.records;
-							this.total = data.data.total;
-							this.currPage = data.current;
+							console.log(data.data)
+							this.tableData = data.data.data;
+							this.total = data.data.totall;
+							this.current = data.data.nowpage;
 						} else {
 						}
 					}).catch( err => {
@@ -200,6 +202,12 @@
 		
 		created() {
 			this.getList();
+			this.axios.get('/apis/goods/list/newProduct')
+			.then(data => {
+				this.list = data.data.data.splice(0,23)
+				console.log(this.list)
+
+			})
 		},
 	}
 	

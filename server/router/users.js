@@ -56,7 +56,6 @@ Router.post('/log',(req,res)=>{
             }else{
                 res.send(util.sendData(-1,'登陆失败',false));
             }
-            
         }).catch((err)=>{
             console.log(err);
         });
