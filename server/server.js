@@ -11,16 +11,14 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 //开启静态文件
-app.use(express.static(path.join(__dirname,'./public')));
+app.use('/public',express.static(path.join(__dirname,'./public')));
 
 const users  = require('./router/users.js');//引用内置模块
 const colulist = require("./router/coluList.js");
-const newPinglist = require('./router/newPingcoluList.js')
-
+const newProducts = require('./router/goodslist/newProducts.js')
 app.use('/api/users',users); //路由
 app.use('/api/coluList',colulist);
-app.use('/api/newPing',newPinglist)
-
+app.use('/api/newProducts',newProducts)
 var port = 5000;
 app.listen(port,()=>{
     console.log('server start in port:'+port);

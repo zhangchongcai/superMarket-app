@@ -2,11 +2,12 @@
     <div class="cinemaList">
 		<div class="searchAdition">
 			<el-form :inline="true"  class="demo-form-inline search-form" size="small">
-				<el-form-item label="Id:">
-					<el-input v-model="searchAdition.mgCode"></el-input>
+				<el-form-item label="名称:">
+					<el-input v-model="searchAdition.productName"></el-input>
 				</el-form-item>
 				<el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
-				<el-button type="primary" @click="insearch" icon="el-icon-search">插入</el-button>
+				<el-button type="primary" @click="New">新建</el-button>
+				<el-button type="primary" @click="removeMany">删除多条</el-button>
 			</el-form>
 		</div>
 		<div class="content">			
@@ -16,16 +17,12 @@
 				stripe
 				ref="multipleTable"
 				@selection-change="handleSelectionChange"
-				v-loading="!list"
+				v-loading="loadding"
 				>
 					<el-table-column
 					type="selection"
-					width="55">
-					</el-table-column>
-					<el-table-column
-					prop="catId"
-					label="id"
-					show-overflow-tooltip
+					width="55"
+					:data="tableOption"
 					>
 					</el-table-column>
 					<el-table-column
@@ -35,14 +32,20 @@
 					>
 					</el-table-column>
 					<el-table-column
-					prop="url"
-					label="url"
+					prop="brand"
+					label="商品品牌"
 					show-overflow-tooltip
 					>
 					</el-table-column>
 					<el-table-column
 					prop="price"
 					label="价格"
+					show-overflow-tooltip
+					>
+					</el-table-column>
+					<el-table-column
+					prop="unit"
+					label="单位"
 					show-overflow-tooltip
 					>
 					</el-table-column>
@@ -59,17 +62,22 @@
 					>
 					</el-table-column>
 					<el-table-column
+					prop="score"
+					label="积分数"
+					show-overflow-tooltip
+					>
+					</el-table-column>
+					<el-table-column
 					
 					label="操作"
 					show-overflow-tooltip
+					width="200px"
 					>
 						<template slot-scope="scope">
-							<span class="icon-color"  @click="cinema_edit(scope.row.uid)">修改</span>
-							<span class="icon-color"  @click="wall_edit(scope.row.uid)">影厅管理</span>
-							<!-- <el-button-group>
-								<el-button size="mini" type="primary" icon="el-icon-edit"></el-button>
-								<el-button size="mini" color="red" type="primary" icon="el-icon-delete"></el-button>
-							</el-button-group> -->
+							<el-button-group>
+								<el-button size="mini" @click="modify(scope.row._id)" type="primary" icon="el-icon-edit"></el-button>
+								<el-button size="mini" @click="delet(scope.row._id)" color="red" type="primary" icon="el-icon-delete"></el-button>
+							</el-button-group>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -106,64 +114,82 @@
 					pageSize:10,
 					//列表
 					tableData: [],
+					tableOption:[],
 					//查询条件
 					searchAdition:{
-						mgCode:"",
-						name:"",
-						code:"",
-						contactMan:"",
-						mphone:"",
-						status:"",
+						"productName":"",
 					},
 				list:null,
+				loadding:true,
 			}
         } ,
 		methods : {
 			//修改
-			cinema_edit(uid){
+			modify(goodsId){
+				console.log(goodsId)
 				this.$router.push({
-					path:'edit',
+					path:'addAndupdata',
 					query:{
-						uid:uid
+						goodsId:goodsId
 					}
 				})
 			},
-			//影厅管理
-			handleSelectionChange(item){
-				console.log(item)
+			//新建
+			New() {
+				this.$router.push('addAndupdata')
 			},
-			//状态
-			stateFormat(row, column) {
-				if (row.status == 1) {
-				return '营业'
-				} else if (row.status == 2) {
-				return '测试'
-				}
+			//删除
+			delet(id){
+				this.$api.newProductsRemoveOne({_id:id})
+				.then(res=> {
+					if(res.code && res.code) {
+						this.$message({
+							type:'success',
+							message:'删除成功！',
+							duration:1000
+						})
+						this.getList()
+					}else {
+						this.$message({
+							type:'error',
+							message:"删除失败！"
+						})
+					}
+				})
 			},
+			handleSelectionChange(){},
 			//查询
 			search(){
-				// this.getList();
-				this.list.forEach(item => {
-				this.axios.get('/apis/goods/queryDetailGoods/'+item.goodsId)
-				.then(data => {
-					data = data.data.data;
-					let imageList = [];
-					data.imageList.forEach(item => {
-						imageList.push(item.url)
-					})
-					item.imageList = imageList;
-					item.score = data.product.score;
-					item.bn = data.product.bn;
-					item.goodsPoint = data.product.goodsPoint;
-					item.brand = data.product.brand;
-					console.log(item)
+				let addition = this.searchAdition;
+				this.$api.newProductsfindMohu({page:this.current,limit:this.pageSize,addition:addition})
+				.then(res => {
+					if(res.code==200){
+						this.tableData = res.data.data
+					}
 				})
-			})
+				
 			},
-			insearch() {
-				this.$api.newPingAdd(this.list)
-				.then(data=> {
-					console.log(data)
+			handleSelectionChange(val) {
+				this.tableOption = val
+			},
+			//删除多条
+			removeMany(list) {
+				console.log(this.tableOption)
+				let array = []
+				this.tableOption.forEach(item => {
+					array.push(item._id)
+				})
+				this.$api.newProductsRemoveMany({list:array})
+				.then(res => {
+					console.log(res.data)
+					if(res.code==200 && res.data) {
+						this.getList()
+						this.$message({
+							type:'success',
+							message:'删除成功！',
+							duration:1000,
+						})
+					}
 				})
 			},
 			//获取列表数据
@@ -172,13 +198,14 @@
 						'page': this.current,
 						'limit':this.pageSize 
 					}
-					let addition = this.searchAdition;
-					this.$api.newPingList(limit,addition).then( data => {
-						if (data && data.code === 200) {
-							console.log(data.data)
-							this.tableData = data.data.data;
-							this.total = data.data.totall;
-							this.current = data.data.nowpage;
+					this.$api.newProductsList(limit).then( res => {
+						if (res && res.code === 200) {
+							let data = res.data;
+							console.log(data)
+							this.tableData = data.data;
+							this.total = data.totall;
+							this.current = data.nowpage;
+							this.loadding = false
 						} else {
 						}
 					}).catch( err => {
@@ -202,13 +229,14 @@
 		
 		created() {
 			this.getList();
-			this.axios.get('/apis/goods/list/newProduct')
-			.then(data => {
-				this.list = data.data.data.splice(0,23)
-				console.log(this.list)
-
-			})
+			// this.axios.get('/apis/goods/list/newProduct')
+			// .then(data => {
+			// 	this.list = data.data.data.splice(0,28)
+				
+			// })
 		},
+		computed:{
+		}
 	}
 	
 	

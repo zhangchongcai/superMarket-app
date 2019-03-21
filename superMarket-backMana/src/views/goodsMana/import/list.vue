@@ -216,9 +216,10 @@
 		
 		created() {
 			// this.getList();
-			this.axios.get('/api')
+			this.axios.get('/apis/goods/list/newProduct')
 			.then(data => {
-				console.log(data)
+				this.list = data.data.data.splice(0,23)
+				
 			})
 		},
 	}

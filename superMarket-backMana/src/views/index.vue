@@ -19,7 +19,10 @@
     </el-container> -->
     <el-container class="main-container">
         <el-aside :width="this.isCollapse ? '60px' : '136px'">
-            <h1 class="project-title">超市后台</h1>
+            <div class="project-title">
+                <img src="../assets/img/touxiang.jpg" alt="">
+                张经理
+            </div>
             <Menu
                 :collapsed="isCollapse"
                 :items="item"
@@ -30,7 +33,7 @@
                 <!-- <Head @collapsed='handleCollapse' @showResetPassword="showResetPassword"/> -->
                 <div class="head-cinema-info">
                     <span class="el-icon-location-outline"></span>
-                    <span class="head-cinema-name">北京自由人影城</span>
+                    <span class="head-cinema-name">超市管理后台</span>
                 </div>
                 <Tabs></Tabs>
             </el-header>
@@ -52,7 +55,7 @@ export default {
             item: [
                 {
                     text: "主页",
-                    icon: "neiye-zhijieshenhe",
+                    icon: "main",
                     path: "/home",
                     params: {},
                     children: [
@@ -66,8 +69,8 @@ export default {
                     
                 },
                 {
-                    text: '商品数据管理',
-                    icon: 'neiye-zhijieshenhe',
+                    text: '数据管理',
+                    icon: 'ic_contents1',
                     path: '/',
                     params: {},
                     children: [
@@ -86,22 +89,22 @@ export default {
                 },
                 {
                     text: '分类管理',
-                    icon: 'neiye-zhijieshenhe',
+                    icon: 'iccontribute',
                     path: '/',
                 },
                 {
                     text: '图片管理',
-                    icon: 'neiye-zhijieshenhe',
+                    icon: 'lunbotu',
                     path: '/',
                 },
                 {
                     text: '收藏管理',
-                    icon: 'neiye-zhijieshenhe',
+                    icon: 'iccontribute',
                     path: '/',
                 },
                 {
                     text: '数据统计',
-                    icon: 'neiye-zhijieshenhe',
+                    icon: 'iccontribute',
                     path: '/',
                 },
                
@@ -153,14 +156,27 @@ export default {
         color: #fff;
         overflow: visible;
         .project-title {
-            font-size: 18px;
+            height: 50px;
+            width: 50px;
+            font-size: 12px;
             line-height: 25px;
             letter-spacing: 3.5px;
-            font-weight: 800;
             display: block;
             text-align: center;
-            margin-bottom: 20px;
-            padding: 10px 0;
+            margin: 10px auto;
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius:50%; 
+                &:hover{
+                    animation: mymove 3s infinite;
+                }
+                
+            }
+            @keyframes mymove {
+                from {transform: rotate(0)}
+                to {transform: rotate(360deg)}
+            }
         }
     }
     .el-main {

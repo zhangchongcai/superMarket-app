@@ -27,28 +27,43 @@ let upload = multer({dest:'tem/'})//设置图片的临时存放区
  *       "data":{img.path},
  *     } 
  */
-Router.post("/img",upload.single('test'),(req,res)=>{
+Router.post("/uploadimg",upload.single('test'),(req,res)=>{
     // console.log(req.file);
-    fs.readFile(req.file.path,(err,data)=>{
+    let max_size = 300;
+    let formatName = req.file.mimetype.split('/')[1]; //格式后缀名称
+    console.log(formatName)
+    if(req.file.size  >1024 * max_size){
+        return  res.send(uitl.sendData(200,'上传失败','文件大于300K!')) ;
+    }else if( formatName == 'png' || formatName == 'jpg' || formatName == 'jpeg'){
+        fs.readFile(req.file.path,(err,data)=>{
         if(err){ return res.send("上传错误1")}
-        let filename = new Date().getTime()+parseInt(Math.random(0,1)*1000)+'.'+req.file.mimetype.split('/')[1];
-        // console.log(req.file)
-        // console.log(req.file.mimetype)
-        // console.log(filename);
-        // console.log(data);
-        
-        fs.writeFile(path.join(__dirname,'../public/img',filename),data,(err)=>{
-            if(err) {
-                console.log(err)
-                return res.send('上传错误2')}
-            let array={
-                err:0,
-                msg:'ok',
-                path:'img/'+filename,
-            }
-            res.send(array);
-        });
+            let filename = new Date().getTime()+parseInt(Math.random(0,1)*1000)+req.file.originalname;
+            fs.writeFile(path.join(__dirname,'../public/goodsImg/img',filename),data,(err)=>{
+                if(err) {
+                    console.log(err)
+                    return res.send('上传错误2')}
+                let data={
+                    origin:req.file,
+                    path:'goodsImg/img/'+filename,
+                }
+                return res.send(uitl.sendData(200,'上传成功',data)) ;
+            });
+                
+        })
+    }else{
+         return  res.send(uitl.sendData(200,'图片格式错误!',0)) ;
+    }
+    
+})
+
+//删除图片
+Router.post("/deleteimg",(req,res)=>{
+    let paths = req.body.path
+    fs.unlink(path.join(__dirname,'../public/',paths),function (err) {
+        if (err) return console.log(err);
+         return  res.send(uitl.sendData(200,'已删除图片!',1)) ;    
     })
+    
 })
 
 
@@ -197,33 +212,23 @@ Router.post('/loadList',(req,res)=>{
  *     } 
  */
 Router.post('/mohu',(req,res)=>{
-    var datas =req.body.data;
-    var page =parseInt(req.body.page) ;
-    var limit =parseInt(req.body.limit) ;
-    var addition = req.body.addition;
-    var reg = new RegExp(addition,'i')//不区分大小
-    ColuListModel.find(
-        {
-            $or:[ //多条件，数组
-                {title:{$regex:reg}},
-                {attribute:{$regex:reg}},
-                {sortTitle:{$regex:reg}},
-                {time:{$regex:reg}},
-            ]
-        }
-        ).sort({'whatTime':-1})            //根据条件查询
-    .then((data)=>{
+    let datas =req.body.data;
+    let page =parseInt(req.body.page) ;
+    let limit =parseInt(req.body.limit) ;
+    let addition = req.body.addition;
+    let reg = new RegExp(addition,'i')//不区分大小
+    let filter = {
+        $or:[ //多条件，数组
+            {title:{$regex:reg}},
+            {attribute:{$regex:reg}},
+            {sortTitle:{$regex:reg}},
+            {time:{$regex:reg}},
+        ]
+    }
+    ColuListModel.find( filter ).sort({'whatTime':-1}).then((data)=>{    //根据条件查询
         if(data){return data}
     }).then((data)=>{
-        ColuListModel.find({
-            $or:[ //多条件，数组
-                {title:{$regex:reg}},
-                {attribute:{$regex:reg}},
-                {sortTitle:{$regex:reg}},
-                {time:{$regex:reg}},
-            ]
-        }).skip(parseInt(page-1)*limit).limit(limit)
-        .then((resolved)=>{
+        ColuListModel.find( filter ).skip(parseInt(page-1)*limit).limit(limit).then((resolved)=> {
             // console.log(resolved);
             var array= {
                 totall:data.length,
