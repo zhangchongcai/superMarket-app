@@ -25,7 +25,6 @@ export default {
         handerClick(){
             this.$router.go(-1);
             // this.$store.commit('');
-            this.$store.commit('changeTabactive',true)
             console.log(this.$store.state.tabActive)
             // console.log(this.$store.state.tabActive,'sssss')
         }

@@ -14,9 +14,9 @@ let config = {
 let domain = document.domain;
 console.log(domain)
 switch (domain) {
-    case '127.0.0.1': 
-        config.baseURL = 'http://192.168.100.122:8082'
-        break;
+    // case '127.0.0.1': 
+    //     config.baseURL = 'http://192.168.100.122:8082'
+    //     break;
     case '192.168.100.222': 
         config.baseURL = 'http://192.168.100.222:8082';
         break;

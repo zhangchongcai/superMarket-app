@@ -41,7 +41,6 @@
 		methods:{
 			changePage:function(){
 				//点击跳转对应的页面
-				this.$store.commit('changeTabactive',this.isShow)
 				this.$router.push('/'+this.page);
 				this.$emit('change',this.page)
 			}

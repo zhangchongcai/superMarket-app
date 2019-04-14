@@ -10,18 +10,23 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
     "font-awesome": "^4.7.0",
+    "js-md5": "^0.7.3",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mint-ui": "^2.2.13",
+    "qs": "^6.7.0",
     "style-loader": "^0.23.1",
     "swiper": "^4.4.6",
     "vant": "^1.6.8",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "^3.1.0"
+    "vuex": "^3.1.0",
+    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-preset-stage-2": "^6.22.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -24,9 +24,6 @@ export default new Vuex.Store({
             state.innerWidth = data.innerWidth;
             state.innerHeight = data.innerHeight;
         },
-        changeTabactive(state,flag) {
-            state.tabActive = flag
-        }
     },
     modules: vuexModules
 })

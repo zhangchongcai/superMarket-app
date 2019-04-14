@@ -44,7 +44,7 @@ export default {
             this.$api.login({"userName":this.userName,"userPass":this.userPassword})
             .then( data => {
                 console.log(data)
-                if (data && data === 200) {
+                if (data && data.code === 200) {
                     if(data.data) {
                         this.$message({
                             message: data.msg,

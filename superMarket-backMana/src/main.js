@@ -11,6 +11,7 @@ import Elemnt from 'element-ui';
 import './assets/fonts/iconfont.css'
 // import 'mint-ui/lib/style.css';
 
+
 Vue.use(Elemnt)
 
 import {
@@ -37,6 +38,16 @@ const router = new VueRouter({
   routes
 });
 
+/**
+ * Config
+ */
+
+Vue.config.debug = process.env.NODE_ENV === 'development'
+Vue.config.silent = process.env.NODE_ENV === 'production'
+Vue.config.devtools = true
+Vue.config.productionTip = false
+
+//路由守卫
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem('token');
   // NProgress.start();

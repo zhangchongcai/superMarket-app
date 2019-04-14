@@ -4,7 +4,7 @@ const Router = express.Router(); //引用Router对象
 const userModel = require("../models/usersModel.js");
 const mail =require('../bin/mail.js');
 const util = require('../bin/utils.js');
-
+const {create , verify} = require('../bin/token')
 let obj={};
 /**
  * @api {post} /user/testUser 用户名验证是否唯一
@@ -19,12 +19,14 @@ let obj={};
  */
 Router.post('/testUser',(req,res)=>{
     var {userName}=req.body;
+        // console.log(userName,'检验')
         userModel.findOne({userName:userName})
         .then((resolve)=>{
+            // console.log(resolve)
             if(resolve){
-                res.send(util.sendData(1,'用户名已存在',null));
+                res.send(util.sendData(200,'用户名已存在',1));
             }else{
-                res.send(util.sendData(-1,'用户名可用',null));
+                res.send(util.sendData(200,'用户名可用',0));
             }
             
         }).catch((err)=>{
@@ -50,11 +52,12 @@ Router.post('/log',(req,res)=>{
     var {userName,userPass}=req.body;
         userModel.findOne({userName:userName,userPass:userPass})
         .then((resolve)=>{
-            // console.log(resolve)
             if(resolve){
-                res.send(util.sendData(1,'登陆成功',true));
+                let result={};
+                result.token = create(userName)
+                res.send(util.sendData(200,'登陆成功',result));
             }else{
-                res.send(util.sendData(-1,'登陆失败',false));
+                res.send(util.sendData(200,'登陆失败',0));
             }
         }).catch((err)=>{
             console.log(err);
@@ -77,25 +80,29 @@ Router.post('/log',(req,res)=>{
  */
 Router.post('/reg',(req,res)=>{
     var {userName,userPass,code}=req.body;
-    //  console.log(code);
-    //  console.log(obj);
-    if(obj[userName]==code){
-        userModel.insertMany({userName,userPass})
-        .then((resolve)=>{
-            res.send(util.sendData(1,'注册成功',null));
+     // console.log(userName);
+        userModel.insertMany({userName,userPass}).then((resolve)=> {
+            res.send(util.sendData(200,'注册成功',1));
         }).catch((err)=>{
-            res.send(util.sendData(-1,'注册失败',null));
+            res.send(util.sendData(-1,'注册失败',0));
             console.log(err)
         });
-        
-    }else{
-        return res.send(util.sendData(-1,'验证码错误！',null));
-    }
     
 })
 
+//处理token验证
+Router.get('/verifytoken',(req,res,next) => {
+    //获取请求头中的token
+    let token = req.header('token')
+    // console.log(token,'验证')
+    if(verify(token)) {
+        return res.send(util.sendData(200,'token通过',1))
+    }else {
+        return res.send(util.sendData(400,'token不通过',0))
 
+    }
 
+})
 
 
 /**

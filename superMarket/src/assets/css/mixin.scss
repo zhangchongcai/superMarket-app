@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+@import "./var";/*引入配置*/
+@mixin font_size($size){/*通过该函数设置字体大小，后期方便统一管理；*/
+  @include font-dpr($size);
+}
+@mixin font_color($color){/*通过该函数设置字体颜色，后期方便统一管理；*/
+	color:$color;
+  [data-theme="theme1"] & {
+    color:$font-color-white;
+  }
+}
+@mixin bg_color($themeColor){
+  background-color: $themeColor;
+  [data-theme="theme1"] & {
+    background-color: $themeColor1;
+  }
+}
+@mixin bg_seachPay_color($color){/*通过该函数设置支付、详细tab背景色，后期方便统一管理；*/
+  background-color:$color;
+  [data-theme="theme"] & {
+    background-color: $themeColor;
+  }
+}
+@mixin font_seachPay_color($color){/*通过该函数设置支付、详细tab字体颜色，后期方便统一管理；*/
+  background-color:$color;
+  [data-theme="theme"] & {
+    background-color: $themeColor;
+  }
+}
+
+@mixin btn-background-color-theme($color){/*按钮背景主题颜色，后期方便统一管理；*/
+  background-color:$color;
+  [data-theme="theme"] & {
+    background-color: $themeColor;
+  }
+}
+
+@mixin header-bgcolor() {
+  background-color: $sec-header-bgcolor-theme;
+  [data-theme="theme1"] & {
+    background-color: $sec-header-bgcolor-theme1;
+  }
+}
+@mixin bd-color-and-font-color($color:$font-color-blue){
+  border-color:$color;
+  color:$color;
+}
+//座位图 mixin
+@mixin seat_color() {
+  color: $seat-color-theme;
+  [data-theme="theme1"] & {
+    color: $seat-color-theme1
+  }
+}
+
+//座位图选中 mixin
+@mixin seat_active_color() {
+  color: $seat-active-color-theme;
+  [data-theme="theme1"] & {
+    color: $seat-color-theme1;
+  }
+}
+
+// 座位图排数背景 mixin
+@mixin seat_rows_bgcolor() {
+  background-color: $seat-rows-bgcolor-theme;
+  [data-theme="theme1"] & {
+    background-color: $seat-rows-bgcolor-theme1;
+  }
+}
+
+//银幕背景
+@mixin screen_bgcolor() {
+  background-color: $seat-color-theme;
+  [data-theme="theme1"] & {
+    color: $seat-color-theme1
+  }
+}
+
+
+//table
+@mixin table-head-bgcolor(){
+  color:$font-color3;
+  background-color: $table-bg-color-theme;
+  [data-theme="theme1"] & {
+    background-color: $table-bg-color-theme;
+  }
+}
+@mixin table-row-bgcolor-even(){
+  background-color: $table-row-bgcolor-even-theme;
+  [data-theme="theme1"] & {
+    background-color: $table-row-bgcolor-even-theme;
+  }
+}
+@mixin table-row-bgcolor-odd(){
+  background-color: $table-row-bgcolor-odd-theme;
+  [data-theme="theme1"] & {
+    background-color: $table-row-bgcolor-odd-theme;
+  }
+}
+
+@mixin font-and-border-color() {
+  color:$btn-background-color-theme;
+  border-color: $btn-background-color-theme;
+  [data-theme="theme1"] & {
+    color:$btn-background-color-theme;
+    border-color: $btn-background-color-theme;
+  }
+}

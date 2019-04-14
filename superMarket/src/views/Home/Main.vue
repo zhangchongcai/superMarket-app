@@ -1,5 +1,11 @@
 <template>
   <div class="home">
+    <header>
+      <van-notice-bar
+        text="我们的进口日用百货超市,包含各发达国家的优质食品、护肤化妆品、日用百货,专门针对白领女性和优质家庭主妇"
+        left-icon="volume-o"
+      />
+    </header>
     <div class="main">
       <div class="swiper-container" id="swiper-banner">
         <div class="swiper-wrapper">
@@ -16,9 +22,9 @@
         <div class="swiper-pagination" id="swiper-banner-p"></div>
       </div>
       <ul class="type_list">
-        <li v-for="item in 8" :key="item" @click="typelist_btn(item)">
-          <div><img src="../../assets/image/fenlei1.jpg" alt=""></div>
-          <div>新品</div>
+        <li v-for="(item,ind) in typeList" :key="ind" @click="typelist_btn(item)">
+          <div><img :src="item.icon" alt=""></div>
+          <div>{{item.name}}</div>
         </li>
       </ul>
       <ul class="banner-list">
@@ -40,12 +46,8 @@
                 <div><span>￥22.9</span><span class="gray">￥22.9</span></div>
               </div>
             </div>
-            <!-- Add Pagination -->
-            <!-- <div class="swiper-pagination" id="sweiper-list-p2"></div> -->
-            <!-- Add Arrows -->
-            <!-- <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div> -->
           </div>
+          <!-- Swiper end -->
         </div>
       </div>
       <div class="week-ad">
@@ -68,25 +70,79 @@
           </div>
       </div>
     </div>
+    <Tabbar></Tabbar>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
-import Tabbar  from '../../components/Tabbar'
 import Swiper from 'swiper'; 
-import 'swiper/dist/css/swiper.min.css';
+import 'swiper/dist/css/swiper.min.css'; 
+import Tabbar from "@/components/NewTabbar";
+import { NoticeBar } from 'vant';
+Vue.use(NoticeBar);
 export default {
   name: 'Home',
-  components:{Tabbar },
+  components:{Tabbar,NoticeBar },
   data(){
-    return{}
+    return{
+      typeList:[
+        {
+          name:'新品',
+          path:'new',
+          icon:require('@/assets/image/type/new.jpg')
+        },
+        {
+          name:'进口食品',
+          path:'new',
+          icon:require('@/assets/image/type/import.jpg')
+        },
+        {
+          name:'进口百货',
+          path:'new',
+          icon:require('@/assets/image/type/3.jpg')
+        },
+        {
+          name:'生鲜肉菜',
+          path:'new',
+          icon:require('@/assets/image/type/4.jpg')
+        },
+        {
+          name:'新鲜水果',
+          path:'new',
+          icon:require('@/assets/image/type/5.jpg')
+        },
+        {
+          name:'低温酸奶',
+          path:'new',
+          icon:require('@/assets/image/type/6.jpg')
+        },
+        {
+          name:'散装干活',
+          path:'new',
+          icon:require('@/assets/image/type/7.jpg')
+        },
+        {
+          name:'烧烤专区',
+          path:'new',
+          icon:require('@/assets/image/type/8.jpg')
+        },
+        {
+          name:'雪糕专区',
+          path:'new',
+          icon:require('@/assets/image/type/9.jpg')
+        },
+        {
+          name:'我的关注',
+          path:'new',
+          icon:require('@/assets/image/type/10.jpg')
+        },
+      ]
+    }
   },
   methods:{
     typelist_btn(item) {
-        if(item==1) {
-          this.$router.push('typelist/new')
-        }
+      this.$router.push({"name":item.path})
     }
   },
   mounted() {
@@ -127,6 +183,7 @@ export default {
 </script>
 <style lang="scss" >
 @import '../../styles/common/common.scss';
+
 .home {
   height: 100%;
   .main{overflow: scroll;margin-bottom: rem(51);}
@@ -143,7 +200,7 @@ export default {
     li{
       margin-top: rem(10);
       float: left;
-      width: 25%;
+      width: 20%;
       text-align: center;
       height: rem(60);
       display: flex;
@@ -221,7 +278,7 @@ export default {
       }
       .shenqian_list{
         box-sizing: border-box;
-        width: 33.33%!important;
+        width: 32%!important;
         padding: 10px;
         float: left;
       }

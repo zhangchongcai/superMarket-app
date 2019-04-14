@@ -106,7 +106,7 @@ export default {
             price:null,
             totalStore:null,
             typeName:null,
-            imageList:null,
+            imageList:[],
             score:null,
             bn:null,
             goodsPoint:null,
@@ -247,7 +247,7 @@ export default {
         search(goodsId) {
             this.$api.newProductsfindOne({_id:goodsId})
             .then(res=> {
-                let data = res.data[0]
+                let data = res.data
                 this.tableData  = data
                 data.imageList.forEach(item=>{
                     let datas = {url:item}

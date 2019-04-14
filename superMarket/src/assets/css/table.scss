@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+@import "./mixin";/*引入配置*/
+
+.tableLayer{
+  .posTableHead{
+    @include table-head-bgcolor()
+  }
+  .posRowEven{
+    @include table-row-bgcolor-even()
+  }
+  .posRowOdd{
+    @include table-row-bgcolor-odd()
+  }
+}

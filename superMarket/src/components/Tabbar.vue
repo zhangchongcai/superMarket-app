@@ -1,5 +1,5 @@
 <template>
-	<div  v-if="active">
+	<div >
 		<div class="tabberWarp">
 			<div class="warp">
 				<Item 

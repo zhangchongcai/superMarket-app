@@ -1,6 +1,5 @@
 <template>
-  <div class="sort">
-      there's sort
+  <div>
     <router-view/>
   </div>
 </template>
@@ -8,12 +7,8 @@
 <script>
 export default {
   name: 'sort',
-  data () {
-    return {
-    }
-  }
 }
 </script>
-<style scoped>
+<style>
 
 </style>

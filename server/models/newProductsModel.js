@@ -25,6 +25,7 @@ let NewcoluListSchema =new Schema({
 	groupProducts:{type:Array,require:false},
 	typeName:{type:String,require:false},
 	specTag:{type:String,require:false},
+	specPrice:{type:String,require:false},
 	intro:{type:String,require:false}
 
 });

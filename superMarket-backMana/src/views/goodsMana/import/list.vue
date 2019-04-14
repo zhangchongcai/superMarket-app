@@ -2,20 +2,8 @@
     <div class="cinemaList">
 		<div class="searchAdition">
 			<el-form :inline="true"  class="demo-form-inline search-form" size="small">
-				<el-form-item label="内部管理编号:">
+				<el-form-item label="商品名称:">
 					<el-input v-model="searchAdition.mgCode"></el-input>
-				</el-form-item>
-				<el-form-item label="影院编码:">
-					<el-input v-model="searchAdition.code"></el-input>
-				</el-form-item>
-				<el-form-item label="影院名称:">
-					<el-input v-model="searchAdition.name"></el-input>
-				</el-form-item>
-				<el-form-item label="影院联系人:">
-					<el-input v-model="searchAdition.contactMan"></el-input>
-				</el-form-item>
-				<el-form-item label="手机号码:">
-					<el-input v-model="searchAdition.mphone"></el-input>
 				</el-form-item>
 				<el-form-item label="状态" >
 				<el-select v-model="searchAdition.status">
@@ -25,6 +13,7 @@
 					</el-select>
 				</el-form-item>
 				<el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
+				<el-button type="primary" @click="insert" icon="el-icon-search">插入</el-button>
 			</el-form>
 		</div>
 		<div class="content">			
@@ -165,21 +154,33 @@
 			search(){
 				this.getList();
 				this.list.forEach(item => {
-				this.axios.get('/apis/goods/queryDetailGoods/'+item.goodsId)
-				.then(data => {
-					data = data.data.data;
-					let imageList = [];
-					data.imageList.forEach(item => {
-						imageList.push(item.url)
+					this.axios.get('/apis/goods/queryDetailGoods/'+item.goodsId)
+					.then(data => {
+						data = data.data.data;
+						item.groupProducts = data.groupProducts
+						let {product} = data 
+						let imageList = []
+						data.imageList.forEach(item => {
+							imageList.push(item.url)
+						})
+						item.imageList = imageList
+						item.score = product.score
+						item.bn = product.bn
+						item.goodsPoint = product.goodsPoint
+						item.brand = product.brand
+						item.unit = product.unit
+						item.typeName = product.typeName
+						item.specPrice = product.specPrice
+						item.specTag = product.specTag
+						item.intro = product.intro
 					})
-					item.imageList = imageList;
-					item.score = data.product.score;
-					item.bn = data.product.bn;
-					item.goodspoint = data.product.goodspoint;
-					item.brand = data.product.brand;
-					console.log(item)
 				})
-			})
+			},
+			insert() {
+				console.log(this.list)
+				this.$api.newProductsAdd(this.list).then(res => {
+					console.log(res.data)
+				})
 			},
 			//获取列表数据
 				getList(){
@@ -218,7 +219,7 @@
 			// this.getList();
 			this.axios.get('/apis/goods/list/newProduct')
 			.then(data => {
-				this.list = data.data.data.splice(0,23)
+				this.list = data.data.data.splice(0,28)
 				
 			})
 		},

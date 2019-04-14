@@ -16,16 +16,15 @@ let routes = [
         title: '首页'
     },
     component:(resolve) => require (['../views/Home/index'],resolve),
-    name: '首页',
     redirect:'/home',
     children:[
         {
             path:'home',
+            name:'home',
             meta:{
                 title:'主页'
             },
             component:(resolve) => require(['../views/Home/Main'],resolve),
-            name:'主页'
 
         },
         
@@ -39,9 +38,9 @@ let routes = [
             children:[
                 {
                     path:'new',
+                    name:'new',
                     meta:{title:'新品'},
                     component:(resolve) => require(['../views/Home/TypeList/new'],resolve),
-                    name:'new',
                 }
             ]
         }
@@ -49,31 +48,44 @@ let routes = [
     },
     {
       path: '/sort',
+      name: 'sort',
       meta: {
           title: '分类'
       },
       component:(resolve) => require (['../views/Sort/index'],resolve),
-      name: '分类'
+      redirect:'/sort/layout',
+      children:[
+          {
+            path: 'layout',
+            name: 'sortlayout',
+            meta: {
+                title: '分类'
+            },
+            component:(resolve) => require (['../views/Sort/layout'],resolve),
+          }
+      ]
     },
     {
       path: '/cart',
+      name:"cart",
       meta: {
-          title: '购物车'
+          title: '购物车',
+          requireAuth:true
       },
       component:(resolve) => require (['../views/cart/index'],resolve),
-      name: '购物车'
     },
     {
       path: '/user',
+      name: 'user',
       meta: {
-          title: '用户'
+          title: '用户',
       },
       component:(resolve) => require (['../views/User/index'],resolve),
-      name: '用户',
-      redirect:'/user/login',
+      redirect:'/user/info',
       children:[
             {
                 path:'login',
+                name:'login',
                 meta:{title:'登录'},
                 component:(resolve) => require(['../views/User/login'],resolve),
             },
@@ -81,6 +93,30 @@ let routes = [
                 path:'reg',
                 meta:{title:'注册'},
                 component:(resolve) => require(['../views/User/register'],resolve),
+            },
+            {
+                path:'info',
+                name:'info',
+                meta:{
+                    requireAuth:true
+                },
+                component:(resolve) => require(['../views/User/userInfo'],resolve)
+            },
+            {
+                path:'address',
+                name:"address",
+                meta:{
+                    requireAuth:true
+                },
+                component:(resolve) => require(['../views/User/address'],resolve)
+            },
+            {
+                path:'addressEdit',
+                name:'addressEdit',
+                meta:{
+                    requireAuth:true
+                },
+                component:(resolve) => require(['../views/User/addressEdit'],resolve)
             }
         ],
     },

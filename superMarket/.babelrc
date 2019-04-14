@@ -1,8 +1,13 @@
+
 {
-  "presets": [["es2015", { "modules": false }]],
+  "presets": ["es2015", "stage-2"],
   "plugins": [
-    "transform-vue-jsx", 
-    "transform-runtime",
-    ["import",{"libraryName":"vant","style":true}]
-  ]
+    "transform-runtime","transform-runtime",
+    ["import",{
+      "libraryName":"vant",
+      "libraryDirectory":"es",
+      "style":true
+    }]
+  ],
+  "comments": false
 }

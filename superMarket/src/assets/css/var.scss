@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+// font-size
+$font-size12: 1.17vw;
+$font-size13: 1.26vw;
+$font-size14: 1.36vw;
+$font-size16: 1.56vw;
+$font-size18: 1.75vw;
+$font-size20: 1.95vw;
+$font-size22: 2.48vw;
+
+// font-color
+$font-color-white : #fff;
+$font-color3 : #333;
+$font-color6 : #666;
+$font-color9 : #999;
+$font-color-blue: #3B74FF;
+
+$font-color-theme1: #666;
+
+$background-color-theme: #3559AF;//背景主题颜色默认
+
+$background-color-page-theme: #EBEBEB;  //所有弹窗页面的背景
+
+$btn-background-color-theme:#3B74FF;//按钮背景颜色
+
+$btn-background-color-lightblue: #719BFF; //浅蓝色按钮
+
+$btn-background-color-orange: #FF7900; //橘红色按钮 一般用于小键盘
+
+
+
+$bg-searchPaydetalTabColor:#D9E4FF; // 主页查找、支付方式菜单背景颜色
+$font-color-searchPaydetalTabColor:#333333;
+
+$bg-film-color: #f1f1f1; //首页左侧电影排期
+
+
+
+$themeColor: #3559AF;
+$themeColor1: rgb(16, 184, 142);
+$menuBreakColor: #6681c2; // footerBar底部菜单分隔栏背景色
+$menuHoverColor: #436AC8;// 底部按钮悬浮hover色
+$menuBorderColor: #4d6db8;// 底部菜单分隔边框色
+
+//通用浅蓝色头部背景  用于影片tab背景 票类 支付按钮
+$sec-header-bgcolor-theme: #D9E4FF;
+$sec-header-bgcolor-theme1: rgb(96, 250, 178); //换肤备用
+
+// 座位颜色 begining----
+$seat-color-theme: #C4D5FF;
+$seat-color-theme1: #60accf; //换肤备选
+
+//座位选中状态颜色
+$seat-active-color-theme: #3B74FF;
+$seat-active-color-theme1: #41e6dd; //换肤备选
+
+//座位排数背景色
+$seat-rows-bgcolor-theme: #F2F2F2;
+$seat-rows-bgcolor-theme1: #585983; //换肤备选
+
+//座位颜色 ending----
+
+//table
+$table-bg-color-theme:#E5EAFF;
+$table-row-bgcolor-even-theme:#fff;
+$table-row-bgcolor-odd-theme:#F0F0F0;
+
+

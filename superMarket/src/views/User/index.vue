@@ -13,6 +13,8 @@ export default {
   }
 }
 </script>
-<style scoped>
-
+<style lang="scss">
+.van-nav-bar{
+  span,.van-icon,.van-nav-bar__title, .van-ellipsis{color:#666}
+}
 </style>

@@ -7,7 +7,8 @@ const uitl = require('../../bin/utils.js');
 const newProductsModel = require('../../models/newProductsModel.js');
 
 Router.post("/add",(req,res)=>{
-    item = req.body;
+    let item = req.body;
+    // item.forEach(item => {
     newProductsModel.insertMany({
         catId:item.catId,
         goodsId:item.goodsId,
@@ -31,6 +32,7 @@ Router.post("/add",(req,res)=>{
         unit:item.unit,
         groupProducts:item.groupProducts,
         typeName:item.typeName,
+        specPrice:item.specPrice,
         specTag:item.specTag,
         intro:item.intro
     }).then((resolved)=>{
@@ -40,7 +42,8 @@ Router.post("/add",(req,res)=>{
         console.log(err);
         res.send(uitl.sendData(200,"添加失败",1)) ;
 
-    })    
+    })
+    // }) //inset end    
 });
 //修改
 
@@ -74,6 +77,7 @@ Router.post('/updataOne',(req,res)=>{
             groupProducts:item.groupProducts,
             typeName:item.typeName,
             specTag:item.specTag,
+            specPrice:item.specPrice,
             intro:item.intro
         }
     })
@@ -90,13 +94,13 @@ Router.post('/list',(req,res)=>{
     let data = req.body
     console.log(data);
     var page = data.page?data.page:1;
-    var limit =data.limit?data.limit:20 ;
+    var limit =data.limit?data.limit:10 ;
     var addition = data.addition;
-    newProductsModel.find(addition)
+    newProductsModel.find()
     .then(data=> {
         if(data){return data}
     }).then(data=> {
-        newProductsModel.find(addition).sort({'createTime':-1}).skip(parseInt(page-1)*limit).limit(limit)
+        newProductsModel.find().sort({'createTime':-1}).skip(parseInt(page-1)*limit).limit(limit)
         .then((resolved)=>{
             // console.log(resolved);
             var array= {
@@ -163,12 +167,11 @@ Router.post('/mohu',(req,res)=>{
 
 
 Router.post('/findOne',(req,res)=>{
-    var goodsId = req.body._id;
-    console.log(req.body);
-    newProductsModel.find({_id:goodsId})
+    var _id = req.body._id;
+    newProductsModel.find({_id:_id})
     .then((resolved)=>{
         // console.log(resolved)
-        return res.send(uitl.sendData(200,"单个查找成功",resolved));
+        return res.send(uitl.sendData(200,"单个查找成功",resolved[0]));
     })
     .catch((err)=>{
         console.log("查找单个失败"+err);

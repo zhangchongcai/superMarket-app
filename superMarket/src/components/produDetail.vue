@@ -16,20 +16,24 @@
                 <mt-tab-container-item id="1">
                     <div class="banner">
                         <mt-swipe @change="handleChange">
-                            <mt-swipe-item v-for="n in 7" :key="n">
-                                <img src="http://image.chijiayd.com/group1/M00/09/98/rBJ8J1xrxYWAN8UNAADeWxaaEdk060.jpg" alt="">
+                            <mt-swipe-item v-for="(item,ind) in goodsInfo.imageList" :key="ind">
+                                <img :src="item" alt="">
                             </mt-swipe-item>
                             </mt-swipe>
                             <div class="pagination">
-                                <span>{{this.swiperIndex}}/7</span>
+                                <span v-if="goodsInfo.imageList">{{this.swiperIndex}}/{{goodsInfo.imageList.length}}</span>
                             </div>
                     </div>
                     <div class="detail_info">
-                        <h3>美国抱抱果儿 婴儿防痱爽身粉（防痱型）140g</h3>
-                        <span class="red">￥15.9</span>
-                        <div><span class="fa fa-star red" v-for="n in 5" :key="n"></span></div>
-                        <div class="van-row"><span>品牌： 抱抱果儿</span> <span>货品编号：05040304</span></div>
-                        <div>赠送积分： 15</div>
+                        <h3>{{goodsInfo.name}}</h3>
+                        <div>
+                            <span class="red">￥{{goodsInfo.price}}</span>
+                            <span class="red" style=" color: rgb(102, 102, 102); text-decoration: line-through; margin-left: 0.133333rem;" v-if="goodsInfo.specPrice!='0'" >￥{{goodsInfo.specPrice}}</span>
+                            <span style="float:right;color:red">{{goodsInfo.specTag}}</span>
+                        </div>
+                        <div><span class="fa fa-star red" v-for="n in goodsInfo.goodsPoint" :key="n"></span></div>
+                        <div class="van-row"><span>品牌： {{goodsInfo.brand}}</span> <span>货品编号：{{goodsInfo.bn}}</span></div>
+                        <div>赠送积分： {{goodsInfo.score}}</div>
                     </div>
                     <div class="van-cell-group" :style="active?'height:'+vanGroupHeight+'px':'height:1.5rem'" ref='cellGroup'>
                         <div class="title">
@@ -71,7 +75,7 @@
             </li>
             <li class="ico cart">
                 <i  class="iconfont icon-cart"></i>
-                <mt-badge size="small">3</mt-badge>
+                <mt-badge size="small">{{cartNum}}</mt-badge>
                 <span class="title">购物车</span>
             </li>
             <li>
@@ -86,9 +90,10 @@
                         <mt-button type="default" size="small" @click="addCart">+</mt-button>
                     </li>
                 </ul>
+                <!-- <Stepper></Stepper> -->
             </li>
             <li class="add">
-                <mt-button type="danger" size="large">加入购物车</mt-button>
+                <mt-button type="danger" size="large" @click="addMyCart">加入购物车</mt-button>
 
             </li>
         </ul>
@@ -98,9 +103,14 @@
 import Swiper from 'swiper';    
 import 'swiper/dist/css/swiper.min.css';
 import { Swipe, SwipeItem } from 'mint-ui';
-import Toback from './Toback';
+import {Stepper , Toast} from 'vant'
+import Vue from 'vue'
+Vue.use(Stepper).use(Toast)
+import Toback from './Toback'
+import {mapMutations, mapGetters} from 'vuex'
+import {GET_CART_DATA} from '../newVuex/types'
 export default {
-    components: {Swipe, SwipeItem,Toback},
+    components: {Swipe, SwipeItem,Toback , Stepper},
     data() {
         return {
             swiperIndex:1,
@@ -114,9 +124,21 @@ export default {
             active:true,
             vanGroupHeight:null,
             num:1,
+            goodsInfo:{
+                imageList:[]
+            },
         }
     },
-    methods:{
+    computed: {
+        ...mapGetters([
+            'cartNum',
+            'cartList'
+        ])
+    },
+    methods: {
+        ...mapMutations([
+            GET_CART_DATA
+        ]),
         handleChange(index) {
             this.swiperIndex = index+1;
         },
@@ -130,10 +152,38 @@ export default {
         },
         addCart() {
             ++this.num;
+        },
+        //加入购物车
+        addMyCart(){
+            let user = sessionStorage.getItem('user')
+            this.goodsInfo.user = user
+            this.goodsInfo.isBuy = false
+            console.log(this.goodsInfo)
+            this.goodsInfo.num = this.num
+            this.$api.cartAdd(this.goodsInfo).then(res => {
+            if(res.code==200){
+                Toast.success('添加成功！');
+                this.$api.cartList(this.goodsInfo).then(res => {
+                    if(res.code){
+                        this.list = res.data.data
+                        this.GET_CART_DATA(res.data.data)
+                    }
+                })
+            }
+        })
+           
+        },
+        getGoodsInfo(id) {
+            this.$api.newInfo({_id:id}).then(res => {
+                if(res.code==200){
+                    this.goodsInfo = res.data
+                }
+            })
         }
     },
     created() {
-        this.$store.commit('changeTabactive',false)
+        var id = this.$route.query._id
+        this.getGoodsInfo(id)
     },
     mounted() {
         var swiper = new Swiper('.swiper-container', {
@@ -145,7 +195,6 @@ export default {
             },
           });
         this.vanGroupHeight = this.$refs.cellGroup.offsetHeight
-        console.log(this.vanGroupHeight)
 
     },
     
@@ -330,7 +379,7 @@ export default {
             margin-top: rem(5);
             margin-left: rem(5);
             overflow: hidden;
-            li{float: left;list-style: none;height: 100%;}
+            // li{float: left;list-style: none;height: 100%;}
             .mint-button--small{
                 display: block;
                 width: .853333rem;
@@ -338,6 +387,7 @@ export default {
                 font-size: rem(30);
                 text-align: center;
                 padding: 0;
+                line-height: 100%;
                 .mint-button-text{width: 100%;}
             }
             .font{
