@@ -1,12 +1,19 @@
 import goodMana from './goodMana';
 const mtRoutes = [
     {
+        path:'/',
+        meta: {
+            title:'主页'
+        },
+        redirect:'/home'
+    },
+    {
         path:'home',
+        name:'home',
         meta: {
             title:'主页'
         },
         component:(resolve) => require (['views/Home'],resolve),
-        name:'主页'
     },
     {
         path:'goodsmana',

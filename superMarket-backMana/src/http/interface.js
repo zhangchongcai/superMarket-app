@@ -80,6 +80,13 @@ export const deleteimg = data => {
         data
     })
 }
+export const typeList = data => {
+    return axios({
+        url: '/api/typeList/add',
+        method: 'post',
+        data
+    })
+}
 export default {
     //****end */
     login,
@@ -95,6 +102,9 @@ export default {
     newProductsEdit,
     newProductsRemoveOne,
     newProductsRemoveMany,
-    newProductsfindMohu
+    newProductsfindMohu,
+
+//分类
+    typeList
 
 };

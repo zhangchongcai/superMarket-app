@@ -107,7 +107,13 @@ export const addressFindone = data => {
         data
     })
 }
-
+export const typeList = data => {
+    return axios({
+        url: '/api/typeList/list',
+        method: 'post',
+        data
+    })
+}
 export default {
     reg,
     userNameExit,
@@ -125,4 +131,6 @@ export default {
     addressAdd,
     addressFindone,
     addressUpdata,
+    //分类
+    typeList
 };    

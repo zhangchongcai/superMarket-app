@@ -2,21 +2,15 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
-// import home from '../views/main/index.vue';
-// export default new Router({
-//   routes: [
-//   ]
-// })
 import mtRoutes from './Mt'
 let routes = [
     
     {
     path: '/',
     meta: {
-        title: '首页'
+        title: 'home'
     },
     component:(resolve) => require (['views/index'],resolve),
-    name: '首页',
     children:mtRoutes
     },
 

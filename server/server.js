@@ -19,6 +19,8 @@ const colulist = require("./router/coluList.js")
 const newProducts = require('./router/goodslist/newProducts.js')
 const cart = require('./router/cart.js')
 const address = require('./router/address.js')
+const typeList = require('./router/sortGoods.js')
+
 
 
 //路由
@@ -27,7 +29,7 @@ app.use('/api/coluList',colulist)
 app.use('/api/newProducts',newProducts)
 app.use('/api/cart',cart)
 app.use('/api/address',address)
-
+app.use('/api/typeList',typeList)
 
 var port = 5000;
 app.listen(port,()=>{

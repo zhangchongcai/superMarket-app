@@ -14,20 +14,18 @@
         <div class="main">
             <div class="menu">
             <ul>
-                <li v-for="(item,ind) in menuList" :key="ind">
+                <li v-for="(item,ind) in menuList" :key="ind" :class="[ind==active?'active':'']" @click="handerItem(item,ind)">
                     <span :class="['iconfont icon-'+item.icon]"></span>
-                    <span>{{item.name}}</span>
+                    <span>{{item.catName}}</span>
                 </li>
             </ul>
             </div>
             <div class="content">
-            <ul>
-                <li></li>
-            </ul>
+                <Collapse :dataList="dataList" :activeNames="activeNames"></Collapse>
             </div>
         </div>
         <div class="footer">
-           <Tabbar :active=active ></Tabbar>
+           <Tabbar :active=tab ></Tabbar>
         </div>  
     </div>
 </template>
@@ -35,29 +33,47 @@
 <script>
 import { Search} from 'vant';
 import  Tabbar  from '@/components/NewTabbar'
+import Collapse from './collapse'
 import Vue from 'vue'
 Vue.use(Search);
 export default {
-    components:{Tabbar,Search,Tabbar},
+    components:{Tabbar,Search,Tabbar,Collapse},
     data () {
         return {
             value:'',
-            active:1,
+            tab:1,
+            active:0,
             menuList:[
-                {name:'生鲜食品',icon:'jinkouniunai',id:"1"},
-                {name:'食品饮料',icon:'jinkouniunai',id:"1"},
-                {name:'厨房食品',icon:'canting',id:"1"},
-                {name:'个护/美妆',icon:'meizhuang',id:"1"},
-                {name:'生活家具',icon:'qingjie',id:"1"},
-                {name:'母婴玩具',icon:'muying',id:"1"},
-                {name:'家电数码',icon:'jiadian',id:"1"},
-                {name:'文体用品',icon:'wenju',id:"1"},
-            ]
+                {catName:'生鲜食品',icon:'jinkouniunai',catId:"888"},
+                {catName:'食品饮料',icon:'jinkouniunai',catId:"8"},
+                {catName:'厨房食品',icon:'canting',catId:"2"},
+                {catName:'个护/美妆',icon:'meizhuang',catId:"5"},
+                {catName:'生活家具',icon:'qingjie',catId:"386"},
+                {catName:'母婴玩具',icon:'muying',catId:"50"},
+                {catName:'家电数码',icon:'jiadian',catId:"59"},
+                {catName:'文体用品',icon:'wenju',catId:"407"},
+            ],
+            activeNames:['0'],
+            dataList:[]
         }
     },
     methods: {
-        onSearch() {}
-
+        onSearch() {},
+        handerItem(item,ind) {
+            this.active=ind
+            this.getData(item.catId)
+        },
+        getData(id) {
+            let catId = id?id:888
+            this.$api.typeList({catId:catId}).then(res => {
+                console.log(res.data)
+                this.activeNames=['0']
+                this.dataList = res.data[0].children
+            })
+        }
+    },
+    created() {
+        this.getData()
     }
 }
 </script>
@@ -74,12 +90,14 @@ export default {
         overflow: hidden;
         .menu{
             width: 3rem;
-            background: orange;
             overflow: scroll;
             overflow-x: hidden;
             overflow-y: scroll;
             ul{
+                background: #f5f5f5;
+                padding: 0 .3rem;
                 li{
+                    box-sizing: border-box;
                     display: flex;
                     flex-direction: column;
                     text-align: center;
@@ -87,10 +105,17 @@ export default {
                     font-size: rem(14);
                     width: 100%;
                     height: 2rem;
-                    background: lightblue;
-                    border-bottom: #fd3f27;
+                    .iconfont{font-size: .6rem}
+                }
+                .active{
+                    border-bottom: #f44 3px solid;
+                    span{color: #f44}
                 }
             }
+        }
+        .content{
+            flex: 1;
+            overflow: auto;
         }
     }
     .footer{

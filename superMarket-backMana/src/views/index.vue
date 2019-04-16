@@ -58,15 +58,6 @@ export default {
                     icon: "main",
                     path: "/home",
                     params: {},
-                    children: [
-                        {
-                            text: '总部影片管理',
-                            path: '/home',
-                            title: '总部影片管理',
-                            params: {}
-                        },
-                    ]
-                    
                 },
                 {
                     text: '数据管理',
