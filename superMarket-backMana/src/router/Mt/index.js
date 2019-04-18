@@ -25,11 +25,28 @@ const mtRoutes = [
         children:goodMana
     },
     {
-        path:'order',
+        path:'swiper',
         meta: {
-            title:'订单详情'
+            title:'轮播图'
         },
-        component:(resolve) => require(['views/order'],resolve)
+        component:(resolve) => require(['views/swiper'],resolve),
+        redirect:'/swiper/list',
+        children:[
+            {
+                path:'list',
+                meta: {
+                    title:'轮播图'
+                },
+                component:(resolve) => require(['views/swiper/list'],resolve),
+            },
+            {
+                path:'updataAndnew',
+                meta: {
+                    title:'轮播图'
+                },
+                component:(resolve) => require(['views/swiper/updataAndnew'],resolve),
+            }
+        ]
     }
 ]
 

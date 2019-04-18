@@ -27,7 +27,6 @@ Router.post("/add",(req,res)=>{
     
 Router.post('/list',(req,res)=>{
     let data = req.body
-    console.log(data);
     sortModel.find({catId:data.catId}).then(data => {
             res.send(uitl.sendData(200,"查询成功！",data));
     })    
@@ -40,7 +39,7 @@ Router.post('/list',(req,res)=>{
 //查找一个
 Router.post('/findOne',(req,res)=>{
     var data = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     sortModel.find({_id:data._id,user:data.user})
     .then((resolved)=>{
         // console.log(resolved)

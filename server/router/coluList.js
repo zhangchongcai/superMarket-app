@@ -38,7 +38,7 @@ Router.post("/uploadimg",upload.single('test'),(req,res)=>{
         fs.readFile(req.file.path,(err,data)=>{
         if(err){ return res.send("上传错误1")}
             let filename = new Date().getTime()+parseInt(Math.random(0,1)*1000)+req.file.originalname;
-            fs.writeFile(path.join(__dirname,'../public/goodsImg/img',filename),data,(err)=>{
+            fs.writeFile(path.join(__dirname,'../public/img/goodsImg',filename),data,(err)=>{
                 if(err) {
                     console.log(err)
                     return res.send('上传错误2')}

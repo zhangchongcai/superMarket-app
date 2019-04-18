@@ -114,6 +114,14 @@ export const typeList = data => {
         data
     })
 }
+//轮播图
+export const swiperList = data => {
+    return axios({
+        url: '/api/swiper/list',
+        method: 'post',
+        data
+    })
+}
 export default {
     reg,
     userNameExit,
@@ -132,5 +140,7 @@ export default {
     addressFindone,
     addressUpdata,
     //分类
-    typeList
+    typeList,
+    //轮播图
+    swiperList
 };    

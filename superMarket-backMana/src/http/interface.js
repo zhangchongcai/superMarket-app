@@ -87,6 +87,56 @@ export const typeList = data => {
         data
     })
 }
+//轮播图
+export const swiperList = data => {
+    return axios({
+        url: '/api/swiper/list',
+        method: 'post',
+        data
+    })
+}
+export const swiperAdd = data => {
+    return axios({
+        url: '/api/swiper/add',
+        method: 'post',
+        data
+    })
+}
+export const swiperUpdata = data => {
+    return axios({
+        url: '/api/swiper/updata',
+        method: 'post',
+        data
+    })
+}
+export const swiperRemoveOnde = data => {
+    return axios({
+        url: '/api/swiper/removeOne',
+        method: 'post',
+        data
+    })
+}
+export const swiperFindOne = data => {
+    return axios({
+        url: '/api/swiper/findOne',
+        method: 'post',
+        data
+    })
+}
+export const swiperMohu = data => {
+    return axios({
+        url: '/api/swiper/mohu',
+        method: 'post',
+        data
+    })
+}
+export const swiperUploadImg = data => {
+    return axios({
+        url: '/api/swiper/uploadimg',
+        method: 'post',
+        data
+    })
+}
 export default {
     //****end */
     login,
@@ -105,6 +155,14 @@ export default {
     newProductsfindMohu,
 
 //分类
-    typeList
+    typeList,
+//轮播图
+    swiperRemoveOnde,
+    swiperUpdata,
+    swiperAdd,
+    swiperList,
+    swiperUploadImg,
+    swiperFindOne,
+    swiperMohu
 
 };

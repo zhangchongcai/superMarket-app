@@ -20,6 +20,8 @@
                 left-icon="contact"
                 size="large"
                 @click-right-icon="$toast('question')"
+                :error-message="err"
+                @blur="test"
             />
 
             <van-field
@@ -68,9 +70,20 @@ export default {
             password1:null,
             captcha:null,
             code:"",
+            err:''
         }
     },
     methods:{
+        //检验手机号码
+        test() {
+            console.log(123)
+            var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+            if (!myreg.test(this.userName)){
+                this.err="手机号格式错误"
+            }else{
+                this.err=""
+            }
+        },
         createCode() {
             var code = "";
             var codeLength = 4; //验证码的长度
@@ -93,6 +106,8 @@ export default {
                 return Toast.fail('请输入密码');
             }else if(this.captcha!=this.code){
                 return Toast.fail('验证码不正确');
+            }else if(this.err!=""){
+                return Toast.fail('账号有误！');
             }
             let data = {
                 userName:this.userName,

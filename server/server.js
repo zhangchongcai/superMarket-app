@@ -20,6 +20,8 @@ const newProducts = require('./router/goodslist/newProducts.js')
 const cart = require('./router/cart.js')
 const address = require('./router/address.js')
 const typeList = require('./router/sortGoods.js')
+const swiper = require('./router/swiper.js')
+
 
 
 
@@ -30,6 +32,8 @@ app.use('/api/newProducts',newProducts)
 app.use('/api/cart',cart)
 app.use('/api/address',address)
 app.use('/api/typeList',typeList)
+app.use('/api/swiper',swiper)
+
 
 var port = 5000;
 app.listen(port,()=>{

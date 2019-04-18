@@ -86,7 +86,7 @@ export default {
                 {
                     text: '图片管理',
                     icon: 'lunbotu',
-                    path: '/',
+                    path: '/swiper',
                 },
                 {
                     text: '收藏管理',

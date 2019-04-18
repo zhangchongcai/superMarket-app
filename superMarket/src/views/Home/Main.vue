@@ -9,15 +9,20 @@
     <div class="main">
       <div class="swiper-container" id="swiper-banner">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <img src="../../../static/images/lunbotu1.jpg" alt="">
+          <!-- <div v-if="1"> -->
+            <div class="swiper-slide" v-for="item in swiperList" :key="item._id">
+              <img :src="'http://127.0.0.1:5000/public/'+item.url" alt="">
+            </div>
+          <!-- </div> -->
+          <!-- <div class="swiper-slide">
+              <img src="../../../static/images/lunbotu1.jpg" alt="">
           </div>
           <div class="swiper-slide">
-            <img src="../../../static/images/lunbotu1.jpg" alt="">
+              <img src="../../../static/images/lunbotu1.jpg" alt="">
           </div>
           <div class="swiper-slide">
-            <img src="../../../static/images/lunbotu1.jpg" alt="">
-          </div>
+              <img src="../../../static/images/lunbotu1.jpg" alt="">
+          </div> -->
         </div>
         <div class="swiper-pagination" id="swiper-banner-p"></div>
       </div>
@@ -137,29 +142,44 @@ export default {
           path:'new',
           icon:require('@/assets/image/type/10.jpg')
         },
-      ]
+      ],
+      swiperList:[]
     }
   },
   methods:{
     typelist_btn(item) {
       this.$router.push({"name":item.path})
-    }
-  },
-  mounted() {
-    //如果想要从后台请求图片放上去 new Swiper要写在网络请求成功的函数里面，否则不会出来数据。
+    },
+    getSwiperData() {
+      this.$api.swiperList().then(res => {
+        this.swiperList = res.data
+        console.log(this.swiperList)
+        //如果想要从后台请求图片放上去 new Swiper要写在网络请求成功的函数里面，否则不会出来数据。
         // var mySwiper = new Swiper( '.swiper-container', {
         //   autoplay:true,
         //   loop:true
         // })
-        var swiper = new Swiper('#swiper-banner', {
-          autoplay:true,
-          loop:true,
-          pagination: {
-            el: '#swiper-banner-p',
-            dynamicBullets: true,
-            },
+        this.$nextTick(function () {
+          var swiper = new Swiper('#swiper-banner', {
+            autoplay:true,
+            loop:true,
+            pagination: {
+              el: '#swiper-banner-p',
+              dynamicBullets: true,
+              },
           });
+        })
 
+      })
+    },
+  },
+  mounted() {
+    this.getSwiperData()
+        var swiper = new Swiper('#swiper-banner', {
+          initialSlide :0,
+          observer:true,//修改swiper自己或子元素时，自动初始化swiper
+          observeParents:true//修改swiper的父元素时，自动初始化swiper
+        });
         //推荐
         var swiper2 = new Swiper('#swiper-list', {
           slidesPerView: 4,
@@ -177,8 +197,10 @@ export default {
           },
         });
         
-        },
+  },
 
+  created() {
+  }
 }
 </script>
 <style lang="scss" >
