@@ -86,11 +86,10 @@ export default {
                                 this.GET_CART_DATA(res.data.data)
                             }
                         })
-                        //返回上一次页面
                         this.$router.push('/'); 
                         console.log('登录验证成功，返回的token：',res.data.token)
                     }else{
-                        Toast.fail("账号密码错误！")
+                        Toast.fail("账号密码错误")
                     }
                 })
             }else {

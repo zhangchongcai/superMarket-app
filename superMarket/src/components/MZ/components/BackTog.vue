@@ -13,7 +13,7 @@ v-backtop-hide 通过一个自定义指令来监听页面滚动事件
 		   enter-active-class='fadeIn animated'
 		    leave-active-class='fadeOut animated'
  		>
-	 	 <div class='contain-box' v-show='isShow'>
+	 	 <div class='contain-box' v-show='isShow' style="background:#666">
 	 	 	<i class="fa fa-arrow-up"></i>
 	 	 </div>
 	 	</transition>
@@ -34,8 +34,8 @@ export default{
 .back-top{
 	   position: fixed;
 		z-index: 9999;
-       right: 20px;
-       bottom: 50px;
+       right: 5%;
+       bottom: 15%;
 	.contain-box{
 		width: 40px;
 		height: 40px;

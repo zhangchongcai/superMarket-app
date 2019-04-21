@@ -122,6 +122,7 @@ let routes = [
     },
     {
         path:'/detail',
+        name:'detail',
         mate:{
             title:'详情',
         },

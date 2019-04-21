@@ -46,9 +46,7 @@ Router.post("/add",(req,res)=>{
     
     
 Router.post('/list',(req,res)=>{
-    let data = req.body
-    console.log(data);
-    SwiperModel.find({catId:data.catId}).sort({'createTime':-1}).then(data => {
+    SwiperModel.find().sort({'createTime':-1}).then(data => {
             res.send(uitl.sendData(200,"查询成功！",data));
     })    
     .catch((err)=>{

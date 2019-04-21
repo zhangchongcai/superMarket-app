@@ -122,6 +122,20 @@ export const swiperList = data => {
         data
     })
 }
+export const shenqianList = data => {
+    return axios({
+        url: '/api/shenqian/list',
+        method: 'post',
+        data
+    })
+}
+export const shenqianFindOne = data => {
+    return axios({
+        url: '/api/shenqian/findOne',
+        method: 'post',
+        data
+    })
+}
 export default {
     reg,
     userNameExit,
@@ -142,5 +156,8 @@ export default {
     //分类
     typeList,
     //轮播图
-    swiperList
+    swiperList,
+
+    shenqianList,
+    shenqianFindOne
 };    

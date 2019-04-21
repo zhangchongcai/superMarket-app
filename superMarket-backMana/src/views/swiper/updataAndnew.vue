@@ -53,8 +53,8 @@ export default {
         dialogImageUrl: '',
         dialogVisible: false,
         mainImg:'',
+        imgPath:'',
         newBuild:'',
-        imgPath:''
       }
     },
     methods: {
@@ -98,8 +98,7 @@ export default {
             data.createTime = this.getTime(new Date().getTime())
             data.url = this.imgPath
             if(New){
-                this.$api.swiperAdd(data)
-                .then(res=> {
+                this.$api.swiperAdd(data).then(res=> {
                     if(res && res.code){
                         this.$message({
                             type:'success',
@@ -117,8 +116,7 @@ export default {
                     }
                 })
             }else{
-                this.$api.swiperUpdata(data)
-                .then(res=> {
+                this.$api.swiperUpdata(data).then(res=> {
                     if(res.data.nModified && res.code){
                         this.$message({
                             type:'success',
@@ -158,11 +156,11 @@ export default {
             this.$router.go(-1)
         },
         search(id) {
-            this.$api.swiperFindOne({_id:id})
-            .then(res=> {
+            this.$api.swiperFindOne({_id:id}).then(res=> {
                 let data = res.data[0]
                 this.tableData  = data
                 this.mainImg = 'http://127.0.0.1:5000/public/'+data.url
+                this.imgPath = data.url
                 this.tableData.createTime = this.getTime(data["createTime"])
                 console.log(this.tableData)
             })

@@ -1,18 +1,18 @@
 <template>
     <div class="new-warp">
-        <el-form ref="form" :model="tableData" label-width="80px" size="mini">
+        <el-form ref="formName" :model="tableData" label-width="80px" size="mini" :rules="rules" >
             <div class="input-warp">
                 <div>
-                    <el-form-item label="商品ID：">
+                    <el-form-item label="商品ID：" >
                         <el-input v-model="tableData.goodsId"></el-input>
                     </el-form-item>
-                    <el-form-item label="类型：">
+                    <el-form-item label="类型：" >
                         <el-input v-model="tableData.typeName"></el-input>
                     </el-form-item>
-                    <el-form-item label="商品单位：">
+                    <el-form-item label="商品单位：" prop="unit">
                         <el-input v-model="tableData.unit"></el-input>
                     </el-form-item>
-                    <el-form-item label="推荐指数">
+                    <el-form-item label="推荐指数" >
                         <el-select v-model="tableData.goodsPoint" placeholder="请选择好评星数">
                             <el-option label="1星" value="1"></el-option>
                             <el-option label="2星" value="2"></el-option>
@@ -21,27 +21,33 @@
                             <el-option label="5星" value="5"></el-option>
                         </el-select>
                     </el-form-item>    
-                    <el-form-item label="商品名称">
-                        <el-input type="textarea" v-model="tableData.name"></el-input>
+                    <el-form-item label="特价" >
+                        <el-input type="input" v-model="tableData.specPrice"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品名称" prop="name">
+                        <el-input type="input" v-model="tableData.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="详情说明">
+                        <el-input type="textarea" v-model="tableData.intro"></el-input>
                     </el-form-item>
                 </div>
                 <div>
-                    <el-form-item label="货码编号：">
+                    <el-form-item label="货码编号：" >
                         <el-input v-model="tableData.bn"></el-input>
                     </el-form-item>
-                    <el-form-item label="价格：">
+                    <el-form-item label="价格：" prop="price">
                         <el-input v-model="tableData.price"></el-input>
                     </el-form-item>
-                    <el-form-item label="库存：">
+                    <el-form-item label="库存：" prop="totalStore">
                         <el-input v-model="tableData.totalStore"></el-input>
                     </el-form-item>
-                    <el-form-item label="积分：">
+                    <el-form-item label="积分：" >
                         <el-input v-model="tableData.score"></el-input>
                     </el-form-item>
-                    <el-form-item label="标签：">
+                    <el-form-item label="标签：" >
                         <el-input v-model="tableData.specTag"></el-input>
                     </el-form-item>
-                    <el-form-item label="创建时间：">
+                    <el-form-item label="创建时间：" >
                         <el-col :span="12">
                         <el-date-picker type="date" placeholder="选择日期" v-model="tableData.createTime" style="width: 100%;"></el-date-picker>
                         </el-col>
@@ -113,20 +119,37 @@ export default {
             brand:null,
             grounpProducts:null,
             unit:null,
+            specPrice:null,
+            intro:null
         },
         dialogImageUrl: '',
         dialogVisible: false,
         fileList:[],
         mainImg:'',
         newBuild:'',
-
+        rules: {
+          goodsId: [
+            { required: true, message: '不能为空', trigger: 'blur' },
+          ],
+          price: [
+            { required: true, message: '不能为空', trigger: 'blur' },
+          ],
+          name: [
+            { required: true, message: '不能为空', trigger: 'blur' },
+          ],
+          totalStore: [
+            { required: true, message: '不能为空', trigger: 'blur' },
+          ],
+          unit: [
+            { required: true, message: '不能为空', trigger: 'blur' },
+          ],
+        }
       }
     },
     methods: {
         handleRemove(file, fileList) {
             // console.log(file, fileList);
-            this.$api.deleteimg({path:file.name})
-            .then(req=> {
+            this.$api.deleteimg({path:file.name}).then(req=> {
                 if(req.data){
                     this.fileList.forEach((item,ind)=>{
                         if(file.uid==item.uid){
@@ -149,8 +172,7 @@ export default {
         uploadImg(file,mainImg) {
             var formData = new FormData();
             formData.append('test',file.file);
-            this.$api.uploadImg(formData)
-            .then(res => {
+            this.$api.uploadImg(formData).then(res => {
                 console.log(res)
                 if(res.code==200 && res.data){
                     let data = res.data
@@ -184,7 +206,10 @@ export default {
             data.imageList = imageList
             data.url = this.mainImg
             console.log(data)
-            if(New){
+            let require 
+            this.$refs.formName.validate((valid) => {require=valid})
+            console.log('require',require)
+            if(New&&require){
                 this.$api.newProductsAdd(data)
                 .then(res=> {
                     if(res && res.code){
@@ -203,7 +228,7 @@ export default {
                         })
                     }
                 })
-            }else{
+            }else if(require){
                 this.$api.newProductsEdit(data)
                 .then(res=> {
                     if(res.data.nModified && res.code){

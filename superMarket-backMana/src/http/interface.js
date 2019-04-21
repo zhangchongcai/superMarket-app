@@ -137,6 +137,29 @@ export const swiperUploadImg = data => {
         data
     })
 }
+export const shenqianAdd = data => {
+    return axios({
+        url: '/api/shenqian/add',
+        method: 'post',
+        data
+    })
+}
+export const shenqianList = data => {
+    return axios({
+        url: '/api/shenqian/list',
+        method: 'post',
+        data
+    })
+}
+
+//用户管理
+export const userList = data => {
+    return axios({
+        url: '/api/users/list',
+        method: 'post',
+        data
+    })
+}
 export default {
     //****end */
     login,
@@ -163,6 +186,11 @@ export default {
     swiperList,
     swiperUploadImg,
     swiperFindOne,
-    swiperMohu
+    swiperMohu,
 
+    shenqianList,
+    shenqianAdd,
+
+    //用户管理
+    userList
 };

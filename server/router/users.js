@@ -90,6 +90,17 @@ Router.post('/reg',(req,res)=>{
     
 })
 
+Router.post('/list',(req,res)=>{
+     // console.log(userName);
+        userModel.find().then((data)=> {
+            res.send(util.sendData(200,'查询成功',data));
+        }).catch((err)=>{
+            res.send(util.sendData(-1,'查询失败',0));
+            console.log(err)
+        });
+    
+})
+
 //处理token验证
 Router.get('/verifytoken',(req,res,next) => {
     //获取请求头中的token

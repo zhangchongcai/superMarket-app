@@ -89,9 +89,9 @@ export default {
                     path: '/swiper',
                 },
                 {
-                    text: '收藏管理',
+                    text: '用户管理',
                     icon: 'iccontribute',
-                    path: '/',
+                    path: '/userMana',
                 },
                 {
                     text: '数据统计',

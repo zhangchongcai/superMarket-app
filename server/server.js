@@ -21,6 +21,8 @@ const cart = require('./router/cart.js')
 const address = require('./router/address.js')
 const typeList = require('./router/sortGoods.js')
 const swiper = require('./router/swiper.js')
+const shenqian = require('./router/goodslist/shenQianList.js')
+
 
 
 
@@ -29,6 +31,7 @@ const swiper = require('./router/swiper.js')
 app.use('/api/users',users) 
 app.use('/api/coluList',colulist)
 app.use('/api/newProducts',newProducts)
+app.use('/api/shenqian',shenqian)
 app.use('/api/cart',cart)
 app.use('/api/address',address)
 app.use('/api/typeList',typeList)

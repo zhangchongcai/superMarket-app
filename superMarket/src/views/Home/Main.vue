@@ -9,20 +9,12 @@
     <div class="main">
       <div class="swiper-container" id="swiper-banner">
         <div class="swiper-wrapper">
-          <!-- <div v-if="1"> -->
-            <div class="swiper-slide" v-for="item in swiperList" :key="item._id">
-              <img :src="'http://127.0.0.1:5000/public/'+item.url" alt="">
-            </div>
-          <!-- </div> -->
-          <!-- <div class="swiper-slide">
-              <img src="../../../static/images/lunbotu1.jpg" alt="">
+          <div class="swiper-slide" v-for="item in swiperList" :key="item._id">
+            <img :src="'http://127.0.0.1:5000/public/'+item.url" alt="">
           </div>
-          <div class="swiper-slide">
-              <img src="../../../static/images/lunbotu1.jpg" alt="">
+          <div v-if="swiperList.length<0">
+              <img src="@/assets/image/lunbotu1.jpg" alt="">
           </div>
-          <div class="swiper-slide">
-              <img src="../../../static/images/lunbotu1.jpg" alt="">
-          </div> -->
         </div>
         <div class="swiper-pagination" id="swiper-banner-p"></div>
       </div>
@@ -68,10 +60,10 @@
       </div>
       <div class="common-list">
         <h3 class="common-title">省钱有道</h3>
-          <div class="shenqian_list" v-for="n in 20" :key="n">
-            <div><img src="../../assets/image/common-list-img1.jpg" alt=""></div>
-            <div class="overflow-text">韵柔洁 A计划丝柔抽取纸/纸巾155mm长包 520张×8包/提</div>
-            <div><span>￥22.9</span><span class="gray">￥22.9</span></div>
+          <div class="shenqian_list" v-for="(item,ind) in shendaoList" :key="ind" @click="toDetail(item._id)">
+            <div><img :src="item.productsList.url" alt=""></div>
+            <div class="overflow-text">{{item.productsList.name}}</div>
+            <div><span>￥22.9</span><span class="gray">￥{{item.productsList.price}}</span></div>
           </div>
       </div>
     </div>
@@ -143,7 +135,8 @@ export default {
           icon:require('@/assets/image/type/10.jpg')
         },
       ],
-      swiperList:[]
+      swiperList:[],
+      shendaoList:[]
     }
   },
   methods:{
@@ -152,8 +145,13 @@ export default {
     },
     getSwiperData() {
       this.$api.swiperList().then(res => {
-        this.swiperList = res.data
-        console.log(this.swiperList)
+        let data = []
+        res.data.forEach(item => {
+          if(item.status){
+            data.push(item)
+          }
+        })
+        this.swiperList = data
         //如果想要从后台请求图片放上去 new Swiper要写在网络请求成功的函数里面，否则不会出来数据。
         // var mySwiper = new Swiper( '.swiper-container', {
         //   autoplay:true,
@@ -166,20 +164,26 @@ export default {
             pagination: {
               el: '#swiper-banner-p',
               dynamicBullets: true,
+              autoplay:true,
+              loop:true
               },
           });
         })
 
       })
     },
+    getShendao() {
+      this.$api.shenqianList().then(res => {
+        this.shendaoList = res.data.data
+        console.log(this.shendaoList)
+      })
+    },
+    toDetail(id) {
+      this.$router.push({name:'detail',query:{_id:id,"shendao":1}})
+    }
   },
   mounted() {
     this.getSwiperData()
-        var swiper = new Swiper('#swiper-banner', {
-          initialSlide :0,
-          observer:true,//修改swiper自己或子元素时，自动初始化swiper
-          observeParents:true//修改swiper的父元素时，自动初始化swiper
-        });
         //推荐
         var swiper2 = new Swiper('#swiper-list', {
           slidesPerView: 4,
@@ -200,6 +204,7 @@ export default {
   },
 
   created() {
+    this.getShendao()
   }
 }
 </script>

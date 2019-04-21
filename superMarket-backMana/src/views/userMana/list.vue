@@ -3,11 +3,10 @@
 		<div class="searchAdition">
 			<el-form :inline="true"  class="demo-form-inline search-form" size="small">
 				<el-form-item label="名称:">
-					<el-input v-model="searchAdition.productName"></el-input>
+					<el-input v-model="searchAdition.Name"></el-input>
 				</el-form-item>
 				<el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
 				<el-button type="primary" @click="New">新建</el-button>
-				<el-button type="primary" @click="removeMany">删除多条</el-button>
 			</el-form>
 		</div>
 		<div class="content">			
@@ -26,45 +25,26 @@
 					>
 					</el-table-column>
 					<el-table-column
-					prop="name"
-					label="商品名称"
+					prop="number"
+					label="序号"
 					show-overflow-tooltip
 					>
 					</el-table-column>
 					<el-table-column
-					prop="brand"
-					label="商品品牌"
+					prop="userName"
+					label="用户名"
 					show-overflow-tooltip
 					>
 					</el-table-column>
 					<el-table-column
-					prop="price"
-					label="价格"
-					show-overflow-tooltip
-					>
-					</el-table-column>
-					<el-table-column
-					prop="unit"
-					label="单位"
-					show-overflow-tooltip
-					>
-					</el-table-column>
-					<el-table-column
-					prop="totalStore"
-					label="数量"
+					prop="userPass"
+					label="用户密码"
 					show-overflow-tooltip
 					>
 					</el-table-column>
                     <el-table-column
-					prop="specTag"
-					label="打折"
-					show-overflow-tooltip
-                    :formatter="tagFormatter"
-					>
-					</el-table-column>
-					<el-table-column
-					prop="score"
-					label="积分数"
+					prop="createTime"
+					label="创建时间"
 					show-overflow-tooltip
 					>
 					</el-table-column>
@@ -118,37 +98,37 @@
 					tableOption:[],
 					//查询条件
 					searchAdition:{
-						"productName":"",
+						"Name":"",
 					},
 				list:null,
 				loadding:true,
 			}
         } ,
 		methods : {
-			tagFormatter(row) {
-				if(row.specTag){
-					return row.specTag
-				}else{
-					return '无'
-				}
-			},
+            statusFormatter(row) {
+                if(row.status==1){
+                    return '有效'
+                }else {
+                    return '无效    '
+                }
+            },
 			//修改
-			modify(goodsId){
-				console.log(goodsId)
+			modify(id){
+				console.log(id)
 				this.$router.push({
-					path:'addAndupdata',
+					path:'updataAndnew',
 					query:{
-						goodsId:goodsId
+						id:id
 					}
 				})
 			},
 			//新建
 			New() {
-				this.$router.push('addAndupdata')
+				this.$router.push('updataAndnew')
 			},
 			//删除
 			delet(id){
-				this.$api.newProductsRemoveOne({_id:id})
+				this.$api.swiperRemoveOnde({_id:id})
 				.then(res=> {
 					if(res.code && res.code) {
 						this.$message({
@@ -169,10 +149,11 @@
 			//查询
 			search(){
 				let addition = this.searchAdition;
-				this.$api.newProductsfindMohu({page:this.current,limit:this.pageSize,addition:addition})
+				this.$api.swiperMohu({addition:addition.Name})
 				.then(res => {
 					if(res.code==200){
-						this.tableData = res.data.data
+                        
+						this.tableData = res.data
 					}
 				})
 				
@@ -180,37 +161,22 @@
 			handleSelectionChange(val) {
 				this.tableOption = val
 			},
-			//删除多条
-			removeMany(list) {
-				console.log(this.tableOption)
-				let array = []
-				this.tableOption.forEach(item => {
-					array.push(item._id)
-				})
-				this.$api.newProductsRemoveMany({list:array})
-				.then(res => {
-					console.log(res.data)
-					if(res.code==200 && res.data) {
-						this.getList()
-						this.$message({
-							type:'success',
-							message:'删除成功！',
-							duration:1000,
-						})
-					}
-				})
-			},
 			//获取列表数据
 				getList(){
 					let limit = {
 						'page': this.current,
 						'limit':this.pageSize 
 					}
-					this.$api.newProductsList(limit).then( res => {
+					this.$api.userList(limit).then( res => {
 						if (res && res.code === 200) {
-							let data = res.data;
+                            let data = res.data;
+                            let num = 1 
+                            data.forEach(item => {
+                                item.number = num
+                                num++
+                            })
 							console.log(data)
-							this.tableData = data.data;
+							this.tableData = data;
 							this.total = data.totall;
 							this.current = data.nowpage;
 							this.loadding = false

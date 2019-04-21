@@ -44,7 +44,7 @@ Router.post("/uploadimg",upload.single('test'),(req,res)=>{
                     return res.send('上传错误2')}
                 let data={
                     origin:req.file,
-                    path:'goodsImg/img/'+filename,
+                    path:'img/goodsImg/'+filename,
                 }
                 return res.send(uitl.sendData(200,'上传成功',data)) ;
             });

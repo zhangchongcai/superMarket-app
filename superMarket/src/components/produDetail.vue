@@ -60,7 +60,10 @@
                     </div>
                 </mt-tab-container-item>
                 <mt-tab-container-item id="2">
-                    <div class="">
+                    <div class="" v-if="goodsInfo.intro">
+                       {{goodsInfo.intro}}
+                    </div>
+                    <div v-else>
                         <img src="http://image.chijiayd.com/group1/M00/09/95/rBJ8J1xnr6CAZng4AAxEJaFeZHI822.jpg" alt="">
                     </div>
                 </mt-tab-container-item>
@@ -114,7 +117,6 @@ export default {
     data() {
         return {
             swiperIndex:1,
-            selected:"1",
             title:'商品页',
             headerIndex:[
                 {title:'商品'},
@@ -133,7 +135,11 @@ export default {
         ...mapGetters([
             'cartNum',
             'cartList'
-        ])
+        ]),
+            selected() {
+                return '1'
+            }
+
     },
     methods: {
         ...mapMutations([
@@ -173,19 +179,31 @@ export default {
         })
            
         },
-        getGoodsInfo(id) {
-            this.$api.newInfo({_id:id}).then(res => {
-                if(res.code==200){
+        getGoodsInfo(id,shendao) {
+            if(shendao) {
+                this.$api.shenqianFindOne({_id:id}).then(res =>{
                     this.goodsInfo = res.data
-                }
-            })
+                })
+            }else{
+                this.$api.newInfo({_id:id}).then(res => {
+                    if(res.code==200){
+                        this.goodsInfo = res.data
+                        this.$nextTick(_=>{
+                            this.$refs.instroDOM = res.data.instro
+                            console.log(this.$refs.instroDOM)
+                        })
+                    }
+                })
+            }
         }
     },
     created() {
         var id = this.$route.query._id
-        this.getGoodsInfo(id)
+        var shendao = this.$route.query.shendao
+        this.getGoodsInfo(id,shendao)
     },
     mounted() {
+        console.log(this.$refs)
         var swiper = new Swiper('.swiper-container', {
           autoplay:true,
           loop:true,

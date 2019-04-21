@@ -47,6 +47,23 @@ const mtRoutes = [
                 component:(resolve) => require(['views/swiper/updataAndnew'],resolve),
             }
         ]
+    },
+    {
+        path:'usermana',
+        meta: {
+            title:'用户管理'
+        },
+        component:(resolve) => require(['views/userMana'],resolve),
+        redirect:'/userMana/list',
+        children:[
+            {
+                path:'list',
+                meta: {
+                    title:'用户列表'
+                },
+                component:(resolve) => require(['views/userMana/list'],resolve),
+            },
+        ]
     }
 ]
 
