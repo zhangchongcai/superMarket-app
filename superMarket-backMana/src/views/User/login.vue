@@ -51,6 +51,7 @@ export default {
                             type: 'success',
                             duration: 1000,
                             onClose: () => {
+                                window.sessionStorage.setItem('user',this.userName)
                                 this.$router.push('/')
                             }
                         })

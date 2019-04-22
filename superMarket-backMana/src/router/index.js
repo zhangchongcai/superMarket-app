@@ -16,6 +16,7 @@ let routes = [
 
     {
       path: '/user',
+      name: 'user',
       meta: {
           title: '用户'
       },

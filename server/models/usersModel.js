@@ -4,6 +4,7 @@ let Schema = mongoose.Schema; //引用Schema对象
 let userSchema =new Schema({
     userName:{type:String,required:true},
     userPass:{type:String,required:true},
+    createTime:{type:String,required:true}
 });
 
 let usermodel = mongoose.model('users',userSchema);

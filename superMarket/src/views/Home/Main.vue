@@ -9,7 +9,7 @@
     <div class="main">
       <div class="swiper-container" id="swiper-banner">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="item in swiperList" :key="item._id">
+          <div class="swiper-slide" v-for="item in swiperList" :key="item._id" @click="typelist_btn('new')">
             <img :src="'http://127.0.0.1:5000/public/'+item.url" alt="">
           </div>
           <div v-if="swiperList.length<0">
@@ -19,16 +19,16 @@
         <div class="swiper-pagination" id="swiper-banner-p"></div>
       </div>
       <ul class="type_list">
-        <li v-for="(item,ind) in typeList" :key="ind" @click="typelist_btn(item)">
+        <li v-for="(item,ind) in typeList" :key="ind" @click="typelist_btn(item.path)">
           <div><img :src="item.icon" alt=""></div>
           <div>{{item.name}}</div>
         </li>
       </ul>
       <ul class="banner-list">
-        <li><div><img src="../../assets/image/banner-list-img1.jpg" alt=""></div></li>
-        <li><div><img src="../../assets/image/banner-list-img2.jpg" alt=""></div></li>
-        <li><div><img src="../../assets/image/banner-list-img2.jpg" alt=""></div></li>
-        <li><div><img src="../../assets/image/banner-list-img2.jpg" alt=""></div></li>
+        <li><div><img src="../../assets/image/other/7.jpg" alt=""></div></li>
+        <li><div><img src="../../assets/image/top1.jpg" alt=""></div></li>
+        <li><div><img src="../../assets/image/left.jpg" alt=""></div></li>
+        <li><div><img src="../../assets/image/right.jpg" alt=""></div></li>
         <li><div><img src="../../assets/image/banner-list-img5.jpg" alt=""></div></li>
       </ul>
       <div class="common-list">
@@ -53,9 +53,12 @@
       <div class="common-list">
         <h3 class="common-title">优惠活动</h3>
         <ul>
-          <li v-for="n in 6" :key="n">
-            <img src="http://image.chijiayd.com/group1/M00/09/59/rBJ8J1w1V26AcYD3AAGXAHQT-RA750.jpg" alt="">
-          </li>
+          <li><img src="@/assets/image/other/1.jpg" alt=""></li>
+          <li><img src="@/assets/image/other/2.jpg" alt=""></li>
+          <li><img src="@/assets/image/other/3.jpg" alt=""></li>
+          <li><img src="@/assets/image/other/4.jpg" alt=""></li>
+          <li><img src="@/assets/image/other/5.jpg" alt=""></li>
+          <li><img src="@/assets/image/other/6.jpg" alt=""></li>
         </ul>
       </div>
       <div class="common-list">
@@ -140,8 +143,8 @@ export default {
     }
   },
   methods:{
-    typelist_btn(item) {
-      this.$router.push({"name":item.path})
+    typelist_btn(path) {
+      this.$router.push({"name":path})
     },
     getSwiperData() {
       this.$api.swiperList().then(res => {

@@ -160,6 +160,13 @@ export const userList = data => {
         data
     })
 }
+export const userMohu = data => {
+    return axios({
+        url: '/api/users/mohu',
+        method: 'post',
+        data
+    })
+}
 export default {
     //****end */
     login,
@@ -192,5 +199,6 @@ export default {
     shenqianAdd,
 
     //用户管理
-    userList
+    userList,
+    userMohu
 };

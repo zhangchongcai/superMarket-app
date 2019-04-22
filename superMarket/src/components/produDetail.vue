@@ -55,13 +55,13 @@
                         </div>    
                             
                     </div>
-                    <div class="van-cell cell">
+                    <div class="van-cell cell" >
                         <p class="hairline">由<span style="color:red;">𪠽𪠽超市</span>发货，满<span style="color:red;">59元</span>免运费。今晚前下单,最快可选择<span style="color:red;">明天(02月21日 周四)早上</span>送货</p>
                     </div>
                 </mt-tab-container-item>
                 <mt-tab-container-item id="2">
-                    <div class="" v-if="goodsInfo.intro">
-                       {{goodsInfo.intro}}
+                    <div class="" v-if="goodsInfo.intro" :html="html" ref="htmlDOM">
+                        {{html}}
                     </div>
                     <div v-else>
                         <img src="http://image.chijiayd.com/group1/M00/09/95/rBJ8J1xnr6CAZng4AAxEJaFeZHI822.jpg" alt="">
@@ -117,6 +117,7 @@ export default {
     data() {
         return {
             swiperIndex:1,
+            selected:"1",
             title:'商品页',
             headerIndex:[
                 {title:'商品'},
@@ -129,6 +130,7 @@ export default {
             goodsInfo:{
                 imageList:[]
             },
+            html:''
         }
     },
     computed: {
@@ -136,10 +138,13 @@ export default {
             'cartNum',
             'cartList'
         ]),
-            selected() {
-                return '1'
+    },
+    watch:{
+        selected(newName,oldeName){
+            if(this.html){
+                this.$refs.htmlDOM.innerHTML = this.html
             }
-
+        }
     },
     methods: {
         ...mapMutations([
@@ -164,7 +169,6 @@ export default {
             let user = sessionStorage.getItem('user')
             this.goodsInfo.user = user
             this.goodsInfo.isBuy = false
-            console.log(this.goodsInfo)
             this.goodsInfo.num = this.num
             this.$api.cartAdd(this.goodsInfo).then(res => {
             if(res.code==200){
@@ -188,10 +192,7 @@ export default {
                 this.$api.newInfo({_id:id}).then(res => {
                     if(res.code==200){
                         this.goodsInfo = res.data
-                        this.$nextTick(_=>{
-                            this.$refs.instroDOM = res.data.instro
-                            console.log(this.$refs.instroDOM)
-                        })
+                        this.html = res.data.intro
                     }
                 })
             }

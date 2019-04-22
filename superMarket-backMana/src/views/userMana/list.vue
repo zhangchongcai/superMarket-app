@@ -6,7 +6,6 @@
 					<el-input v-model="searchAdition.Name"></el-input>
 				</el-form-item>
 				<el-button type="primary" @click="search" icon="el-icon-search">查询</el-button>
-				<el-button type="primary" @click="New">新建</el-button>
 			</el-form>
 		</div>
 		<div class="content">			
@@ -149,10 +148,13 @@
 			//查询
 			search(){
 				let addition = this.searchAdition;
-				this.$api.swiperMohu({addition:addition.Name})
+				this.$api.userMohu({userName:addition.Name})
 				.then(res => {
 					if(res.code==200){
-                        
+						let num =1
+                        res.data.forEach(item => {
+							item.number +=num 
+						})
 						this.tableData = res.data
 					}
 				})

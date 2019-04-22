@@ -6,6 +6,35 @@ const mail =require('../bin/mail.js');
 const util = require('../bin/utils.js');
 const {create , verify} = require('../bin/token')
 let obj={};
+
+
+
+Router.post('/mohu',(req,res)=>{
+    let {userName} = req.body
+    console.log(userName)
+    let filter={
+        $or: [  // 多字段同时匹配
+          // {price: {$regex: addition.price}},// 
+          {userName: {$regex: userName}}//  $options: '$i' 忽略大小写
+        ]
+    } 
+    userModel.find( filter ).sort({'createTime':-1}).then((data)=> {
+        res.send(util.sendData(200,'查询成功',data))
+    })
+
+
+})
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @api {post} /user/testUser 用户名验证是否唯一
  * @apiName Login
@@ -79,9 +108,9 @@ Router.post('/log',(req,res)=>{
  * @apiSuccess {String} msg 错误信息.
  */
 Router.post('/reg',(req,res)=>{
-    var {userName,userPass,code}=req.body;
+    var {userName,userPass,createTime}=req.body;
      // console.log(userName);
-        userModel.insertMany({userName,userPass}).then((resolve)=> {
+        userModel.insertMany({userName,userPass,createTime}).then((resolve)=> {
             res.send(util.sendData(200,'注册成功',1));
         }).catch((err)=>{
             res.send(util.sendData(-1,'注册失败',0));
