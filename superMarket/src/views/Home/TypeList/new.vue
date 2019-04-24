@@ -80,7 +80,6 @@ export default {
         loadTop() {
             // 加载更多数据  下拉
             console.log('下拉')
-            // this.allLoaded = true
             this.$refs.loadmore.onTopLoaded();
             this.page= 1
             this.getList()
@@ -91,7 +90,6 @@ export default {
             this.$refs.loadmore.onBottomLoaded();
             this.page+=1
             this.getList()
-            // this.allLoaded = true
         }
     },
     created() {

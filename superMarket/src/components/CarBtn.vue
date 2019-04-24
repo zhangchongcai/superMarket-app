@@ -16,6 +16,7 @@ export default {
         padding: 0.04rem 0.133333rem;
         border: solid 1px #df0f24;
         border-radius: 5px;
+        color: #df0f24
     }
 </style>
 

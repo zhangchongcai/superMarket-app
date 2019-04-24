@@ -41,7 +41,6 @@ Router.post("/add",(req,res)=>{
     }).catch((err)=>{
         console.log(err);
         res.send(uitl.sendData(200,"添加失败",1)) ;
-
     })
     // }) //inset end    
 });

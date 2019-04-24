@@ -94,7 +94,7 @@ export default {
         },
         {
           name:'进口食品',
-          path:'new',
+          path:'import',
           icon:require('@/assets/image/type/import.jpg')
         },
         {
@@ -144,6 +144,7 @@ export default {
   },
   methods:{
     typelist_btn(path) {
+      console.log('Lu',path)
       this.$router.push({"name":path})
     },
     getSwiperData() {
@@ -155,11 +156,6 @@ export default {
           }
         })
         this.swiperList = data
-        //如果想要从后台请求图片放上去 new Swiper要写在网络请求成功的函数里面，否则不会出来数据。
-        // var mySwiper = new Swiper( '.swiper-container', {
-        //   autoplay:true,
-        //   loop:true
-        // })
         this.$nextTick(function () {
           var swiper = new Swiper('#swiper-banner', {
             autoplay:true,

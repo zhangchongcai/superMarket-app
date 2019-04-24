@@ -77,7 +77,7 @@
                 <i class="iconfont icon-qq"></i>
             </li>
             <li class="ico cart">
-                <i  class="iconfont icon-cart"></i>
+                <i  class="iconfont icon-cart" @click="gotoCart"></i>
                 <mt-badge size="small">{{cartNum}}</mt-badge>
                 <span class="title">购物车</span>
             </li>
@@ -167,6 +167,11 @@ export default {
         //加入购物车
         addMyCart(){
             let user = sessionStorage.getItem('user')
+            if(!user){
+                this.$router.push({"name":"login"})
+                Toast.fail('请先登录');
+                return
+            }
             this.goodsInfo.user = user
             this.goodsInfo.isBuy = false
             this.goodsInfo.num = this.num
@@ -181,7 +186,9 @@ export default {
                 })
             }
         })
-           
+        },
+        gotoCart() {
+            this.$router.push({'name':'cart'})
         },
         getGoodsInfo(id,shendao) {
             if(shendao) {
@@ -214,7 +221,6 @@ export default {
             },
           });
         this.vanGroupHeight = this.$refs.cellGroup.offsetHeight
-
     },
     
     

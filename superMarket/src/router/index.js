@@ -41,6 +41,12 @@ let routes = [
                     name:'new',
                     meta:{title:'新品'},
                     component:(resolve) => require(['../views/Home/TypeList/new'],resolve),
+                },
+                {
+                    path:'import',
+                    name:'import',
+                    meta:{title:'进口食品'},
+                    component:(resolve) => require(['../views/Home/TypeList/import'],resolve),
                 }
             ]
         }

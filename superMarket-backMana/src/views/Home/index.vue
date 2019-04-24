@@ -30,10 +30,10 @@ export default {
     }
   },
   created() {
-    // this.axios('apis/wap/index/3').then(res => {
-    //   this.data = res.data.data.productsListWrap.productsList.slice(this.num,this.num+5)
-    //   console.log(this.data)
-    // })
+    this.axios('apis/special?specialId=60&specialType=1').then(res => {
+      this.data = res.data.data
+      console.log(this.data)
+    })
     let user = window.sessionStorage.getItem('user')
     console.log(user)
     if(!user) {

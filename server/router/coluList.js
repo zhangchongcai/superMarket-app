@@ -31,7 +31,7 @@ Router.post("/uploadimg",upload.single('test'),(req,res)=>{
     // console.log(req.file);
     let max_size = 300;
     let formatName = req.file.mimetype.split('/')[1]; //格式后缀名称
-    console.log(formatName)
+    // console.log(formatName)
     if(req.file.size  >1024 * max_size){
         return  res.send(uitl.sendData(200,'上传失败','文件大于300K!')) ;
     }else if( formatName == 'png' || formatName == 'jpg' || formatName == 'jpeg'){
