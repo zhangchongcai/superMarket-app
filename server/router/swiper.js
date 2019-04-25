@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require("path");
 const uitl = require('../bin/utils.js');
 const SwiperModel = require('../models/SwiperModel.js');
+const {create , verify} = require('../bin/token')
+
 
 let upload = multer({dest:'tem/'})//设置图片的临时存放区
 
@@ -46,6 +48,11 @@ Router.post("/add",(req,res)=>{
     
     
 Router.post('/list',(req,res)=>{
+    let token = req.header('token')
+    // console.log(token,'验证')
+    if(!verify(token)) {
+        return res.send(uitl.sendData(400,'token不通过',0))
+    }
     SwiperModel.find().sort({'createTime':-1}).then(data => {
             res.send(uitl.sendData(200,"查询成功！",data));
     })    

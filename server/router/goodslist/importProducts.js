@@ -4,44 +4,28 @@ const Router=express.Router();
 const fs = require("fs");
 const path = require("path");
 const uitl = require('../../bin/utils.js');
-const NewpingModel = require('../../models/NewpingModel.js');
+const importModel = require('../../models/importModel.js');
 
 Router.post("/add",(req,res)=>{
-    data = req.body;
+    item = req.body;
     // console.log(data);
     // var nowtime = new Date().getTime()*1;
-    data.forEach(item => {
-        NewpingModel.insertMany({
-            catId:item.catId,
-            goodsId:item.goodsId,
-            imageId:item.imageId,
-            brandId:item.brandId,
-            typeId:item.typeId,
-            objType:item.objType,
-            createTime:item.createTime,
-            name:item.name,
-            productName:item.productName,
-            surl:item.surl,
-            url:item.url,
-            price:item.price,
-            totalStore:item.totalStore,
-            typeName:item.typeName,
-            imageList:item.imageList,
-            score:item.score,
-            bn:item.bn,
-            goodsPoint:item.goodsPoint,
-            brand:item.brand,
-            intro:item.intro
+    // data.forEach(item => {
+        importModel.insertMany({
+            Name:item.Name,
+            titlePic:item.titlePic,
+            widgetId:item.widgetId,
+            widgetsInstanceList:item.widgetsInstanceList
+        
         }).then((resolved)=>{
             // console.log(resolved)c
-            // res.send(uitl.sendData(1,'插入成功',data)) ;
+            res.send(uitl.sendData(1,'插入成功',resolved)) ;
         }).catch((err)=>{
             console.log(err);
             // res.send(uitl.sendData(-1,"插入失败",data)) ;
 
         })    
-    })
-            res.send(uitl.sendData(1,'插入成功',data)) ;
+    // })
     
 });
 
@@ -52,11 +36,11 @@ Router.post('/list',(req,res)=>{
     var page = data.page?data.page:1;
     var limit =data.limit?data.limit:20 ;
     var addition = data.addition;
-    NewpingModel.find(addition)
+    importModel.find(addition)
     .then(data=> {
         if(data){return data}
     }).then(data=> {
-        NewpingModel.find(addition).sort({'createTime':-1}).skip(parseInt(page-1)*limit).limit(limit)
+        importModel.find(addition).sort({'createTime':-1}).skip(parseInt(page-1)*limit).limit(limit)
         .then((resolved)=>{
             // console.log(resolved);
             var array= {
@@ -84,7 +68,7 @@ Router.post('/mohu',(req,res)=>{
     var limit =parseInt(req.body.limit) ;
     var addition = req.body.addition;
     var reg = new RegExp(addition,'i')//不区分大小
-    NewpingModel.find(
+    importModel.find(
         {
             $or:[ //多条件，数组
                 {title:{$regex:reg}},
@@ -97,7 +81,7 @@ Router.post('/mohu',(req,res)=>{
     .then((data)=>{
         if(data){return data}
     }).then((data)=>{
-        NewpingModel.find({
+        importModel.find({
             $or:[ //多条件，数组
                 {title:{$regex:reg}},
                 {attribute:{$regex:reg}},
@@ -132,7 +116,7 @@ Router.post('/mohu',(req,res)=>{
 Router.post('/findOne',(req,res)=>{
     var goodsId = req.body.goodsId;
     // console.log(id);
-    NewpingModel.find({goodsId:goodsId})
+    importModel.find({goodsId:goodsId})
     .then((resolved)=>{
         // console.log(resolved)
         return res.send(uitl.sendData(200,"单个查找成功",resolved));
@@ -147,7 +131,7 @@ Router.post('/updataOne',(req,res)=>{
     // console.log(data);
     //删除久图片
     // if()
-    NewpingModel.updateOne({_id:data.id},{
+    importModel.updateOne({_id:data.id},{
         $set:{
             "title":data.title,
             "img":data.img,
@@ -173,7 +157,7 @@ Router.post('/updataOne',(req,res)=>{
 Router.post('/updataMany',(req,res)=>{
     var data =JSON.parse(req.body.data);
     // console.log(data);
-    NewpingModel.updateMany({_id:data.attr},{
+    importModel.updateMany({_id:data.attr},{
         $set:data.addition,
     })
     .then((resolved)=>{
@@ -208,7 +192,7 @@ Router.post('/updataMany',(req,res)=>{
 Router.post('/removeOne',(req,res)=>{
     var id =req.body.id;
         //删除单个
-    NewpingModel.deleteOne({ _id: id })
+    importModel.deleteOne({ _id: id })
         .then((resolved) => {
             if (resolved) {
                 res.send(uitl.sendData(1, "单个删除成功！", null));
@@ -248,7 +232,7 @@ Router.post('/removeMany',(req,res)=>{
     // console.log(req.body)
     // console.log(typeof(id));
     // console.log(id)
-    NewpingModel.deleteMany({_id:id})
+    importModel.deleteMany({_id:id})
         .then((resolved)=>{
             // console.log(resolved)
             if(resolved){

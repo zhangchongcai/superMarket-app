@@ -20,18 +20,33 @@ export default {
   methods:{
     search() {},
     insert() {
-      this.$api.shenqianAdd({"productsLis":this.data}).then(res => {
-        this.$nextTick(_=> {
+      var imports = this.data[0]
+      // let data = {
+      //   Name:'进口休闲零食',
+      //   titlePic:imports.titlePic,
+      //   widgetId:imports.widgetId,
+      //   widgetsInstanceList:imports.widgetsInstanceList[0]['productsList']
+      // }
+      // console.log(data)
+      // this.$api.importProductsAdd(data).then(res => {
+      //   console.log(res)
+      // })
 
-        })
-      this.num+=5
-        console.log(res)
-      })
+    //-------详情------------
+    imports.widgetsInstanceList[0]['productsList'].forEach(item => {
+      console.log(item.widgetId)
+    })
+
+
+
+
     }
+
+    
   },
   created() {
     this.axios('apis/special?specialId=60&specialType=1').then(res => {
-      this.data = res.data.data
+      this.data = res.data.data.widgetsInstanceList
       console.log(this.data)
     })
     let user = window.sessionStorage.getItem('user')

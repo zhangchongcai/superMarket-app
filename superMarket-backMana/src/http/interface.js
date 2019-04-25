@@ -167,6 +167,20 @@ export const userMohu = data => {
         data
     })
 }
+export const importProductsAdd = data => {
+    return axios({
+        url: '/api/importProducts/add',
+        method: 'post',
+        data
+    })
+}
+export const importDetailAdd = data => {
+    return axios({
+        url: '/api/importDetail/add',
+        method: 'post',
+        data
+    })
+}
 export default {
     //****end */
     login,
@@ -184,6 +198,10 @@ export default {
     newProductsRemoveMany,
     newProductsfindMohu,
 
+    //进口
+    importProductsAdd,
+    importDetailAdd,
+
 //分类
     typeList,
 //轮播图
@@ -200,5 +218,6 @@ export default {
 
     //用户管理
     userList,
-    userMohu
+    userMohu,
+    
 };
