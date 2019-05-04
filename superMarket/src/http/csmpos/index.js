@@ -136,6 +136,21 @@ export const shenqianFindOne = data => {
         data
     })
 }
+//进口
+export const importProductsList = data => {
+    return axios({
+        url: '/api/importProducts/list',
+        method: 'post',
+        data
+    })
+}
+export const importDetail = data => {
+    return axios({
+        url: '/api/importDetail/findOne',
+        method: 'post',
+        data
+    })
+}
 export default {
     reg,
     userNameExit,
@@ -159,5 +174,9 @@ export default {
     swiperList,
 
     shenqianList,
-    shenqianFindOne
+    shenqianFindOne,
+
+    //进口
+    importProductsList,
+    importDetail
 };    

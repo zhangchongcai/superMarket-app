@@ -174,11 +174,11 @@ export default {
     getShendao() {
       this.$api.shenqianList().then(res => {
         this.shendaoList = res.data.data
-        console.log(this.shendaoList)
+        // console.log(this.shendaoList)
       })
     },
     toDetail(id) {
-      this.$router.push({name:'detail',query:{_id:id,"shendao":1}})
+      this.$router.push({name:'detail',query:{"shendaoId":id}})
     }
   },
   mounted() {
@@ -207,7 +207,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" >
+<style lang= "scss" >
 @import '../../styles/common/common.scss';
 
 .home {

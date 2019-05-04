@@ -86,7 +86,7 @@ Router.post('/log',(req,res)=>{
                 result.token = create(userName)
                 res.send(util.sendData(200,'登陆成功',result));
             }else{
-                res.send(util.sendData(200,'登陆失败',0));
+                res.send(util.sendData(403,'登陆失败',0));
             }
         }).catch((err)=>{
             console.log(err);

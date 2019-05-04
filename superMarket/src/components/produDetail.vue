@@ -17,7 +17,8 @@
                     <div class="banner">
                         <mt-swipe @change="handleChange">
                             <mt-swipe-item v-for="(item,ind) in goodsInfo.imageList" :key="ind">
-                                <img :src="item" alt="">
+                                <img :src="item" alt="" v-if="item">
+                                <img :src="item.url" alt="" v-else>
                             </mt-swipe-item>
                             </mt-swipe>
                             <div class="pagination">
@@ -172,46 +173,80 @@ export default {
                 Toast.fail('请先登录');
                 return
             }
+
             this.goodsInfo.user = user
             this.goodsInfo.isBuy = false
             this.goodsInfo.num = this.num
+            console.log(this.goodsInfo)
             this.$api.cartAdd(this.goodsInfo).then(res => {
-            if(res.code==200){
-                Toast.success('添加成功！');
-                this.$api.cartList(this.goodsInfo).then(res => {
-                    if(res.code){
-                        this.list = res.data.data
-                        this.GET_CART_DATA(res.data.data)
-                    }
-                })
-            }
-        })
+                if(res.code==200){
+                    Toast.success('添加成功！');
+                    this.$api.cartList(this.goodsInfo).then(res => {
+                        if(res.code){
+                            this.list = res.data.data
+                            this.GET_CART_DATA(res.data.data)
+                        }
+                    })
+                }
+            })
         },
         gotoCart() {
             this.$router.push({'name':'cart'})
         },
-        getGoodsInfo(id,shendao) {
-            if(shendao) {
-                this.$api.shenqianFindOne({_id:id}).then(res =>{
-                    this.goodsInfo = res.data
-                })
-            }else{
+        getGoodsInfo(id,type) {
+            if(type==1){
                 this.$api.newInfo({_id:id}).then(res => {
                     if(res.code==200){
                         this.goodsInfo = res.data
                         this.html = res.data.intro
                     }
                 })
+            }else if(type==2){
+                this.$api.shenqianFindOne({_id:id}).then(res =>{
+                    let data = res.data.productsList
+                    this.goodsInfo = data
+                    console.log(this.goodsInfo)
+                    let imgList = []
+                    imgList.push(data.url)
+                    this.goodsInfo.imageList = imgList
+                    this.html = data.intro
+                })
+            }else if(type==3) {
+                this.$api.importDetail({"goodsId":id}).then(res => {
+                    this.goodsInfo = res.data[0]
+                    let imgList = []
+                    let product = this.goodsInfo.product
+                    console.log(product)
+                    this.goodsInfo.imageList.forEach(item => {
+                        imgList.push(item.url)
+                    })
+                    this.goodsInfo.imageList = imgList
+                    for(var item in product){
+                        this.goodsInfo[item] = product[item]
+                    }
+                    this.goodsInfo.url = product.defaultImage.url
+                    this.goodsInfo.productName = product.name
+                    this.html = product.intro
+
+                    // this.goodsInfo.assign(this.goodsInfo.product)
+                })
             }
         }
     },
     created() {
         var id = this.$route.query._id
-        var shendao = this.$route.query.shendao
-        this.getGoodsInfo(id,shendao)
+        var shendaoId = this.$route.query.shendaoId
+        var imports = this.$route.query.imports
+        if(id){
+            this.getGoodsInfo(id,1)
+
+        }else if(shendaoId){
+            this.getGoodsInfo(shendaoId,2)
+        }else{
+            this.getGoodsInfo(imports,3)
+        }
     },
     mounted() {
-        console.log(this.$refs)
         var swiper = new Swiper('.swiper-container', {
           autoplay:true,
           loop:true,

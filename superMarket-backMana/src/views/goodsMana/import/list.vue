@@ -133,15 +133,6 @@
 					}
 				})
 			},
-			//影厅管理
-			wall_edit(uid){
-				this.$router.push({
-					path:'/CTM/cinemawall/list',
-					query:{
-						cinemaUid:uid
-					}
-				})
-			},
 			//状态
 			stateFormat(row, column) {
 				if (row.status == 1) {
@@ -152,35 +143,43 @@
 			},
 			//查询
 			search(){
-				this.getList();
-				this.list.forEach(item => {
-					this.axios.get('/apis/goods/queryDetailGoods/'+item.goodsId)
-					.then(data => {
-						data = data.data.data;
-						item.groupProducts = data.groupProducts
-						let {product} = data 
-						let imageList = []
-						data.imageList.forEach(item => {
-							imageList.push(item.url)
-						})
-						item.imageList = imageList
-						item.score = product.score
-						item.bn = product.bn
-						item.goodsPoint = product.goodsPoint
-						item.brand = product.brand
-						item.unit = product.unit
-						item.typeName = product.typeName
-						item.specPrice = product.specPrice
-						item.specTag = product.specTag
-						item.intro = product.intro
-					})
-				})
+				// var imports = this.data[0]
+				// let data = {
+				//   Name:'进口休闲零食',
+				//   titlePic:imports.titlePic,
+				//   widgetId:imports.widgetId,
+				//   widgetsInstanceList:imports.widgetsInstanceList[0]['productsList']
+				// }
+				// console.log(data)
+				// this.$api.importProductsAdd(this.data).then(res => {
+				//   console.log(res)
+				// })
 			},
 			insert() {
-				console.log(this.list)
-				this.$api.newProductsAdd(this.list).then(res => {
-					console.log(res.data)
-				})
+				var Outlist = this.data.widgetsInstanceList
+				console.log(Outlist)
+				// //-------详情------------
+				for(var i=1;i<Outlist.length;i++){
+					Outlist[i].widgetsInstanceList[0]['productsList'].forEach(item => {
+						console.log(item.goodsId)
+						let goodsId = item.goodsId
+						this.axios('apis/goods/queryDetailGoods/'+goodsId).then(res => {
+							let item = res.data.data
+							let data = {
+								goodsId:goodsId,
+								groupProducts:item.groupProducts,
+								imageList:item.imageList,
+								product:item.product,
+								shipInfo:item.shipInfo
+							}
+							console.log(res.data)
+							this.$api.importDetailAdd(data).then(res => {
+								console.log(res.data)
+							})
+						})
+
+					})
+				}
 			},
 			//获取列表数据
 				getList(){
@@ -217,10 +216,9 @@
 		
 		created() {
 			// this.getList();
-			this.axios.get('/apis/goods/list/newProduct')
-			.then(data => {
-				this.list = data.data.data.splice(0,28)
-				
+			this.axios('apis/special?specialId=60&specialType=1').then(res => {
+				this.data = res.data.data
+				console.log(this.data)
 			})
 		},
 	}

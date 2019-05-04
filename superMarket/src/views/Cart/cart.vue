@@ -36,7 +36,7 @@
     <div class="cart-footer">
       <div class="all-warp">
         <label class=" " for="allCheckbox">
-          <van-checkbox v-model="checked" checked-color="#e4393c" @change="allCheckbox">全选</van-checkbox>
+          <van-checkbox v-model="checked" checked-color="#e4393c" @click="allCheckbox">反选</van-checkbox>
         </label>
       </div>
       <div class="count-warp">
@@ -46,7 +46,7 @@
         </h3>
         <p>总额¥{{totallMonay}}</p>
       </div>
-      <div class="pay">去结算({{totall}})</div>
+      <div class="pay">去结算({{cartNum}})</div>
     </div>
 
   </div>
@@ -56,7 +56,7 @@
 import Toback from '../../components/Toback';
 import { Swipe,SwipeItem,Button ,Checkbox,Stepper,Toast } from "vant"
 import {mapMutations, mapGetters} from 'vuex'
-import {GET_CART_DATA} from '@/newVuex/types'
+import {GET_CART_DATA  } from '@/newVuex/types'
 import Vue from 'vue'
 Vue.use(Stepper).use(Toast);
 export default {
@@ -74,18 +74,18 @@ export default {
       allCheckBox:false,
       totall:0,
       totallMonay:0,
-      cartList:[]
     }
   },
   computed: {
     ...mapGetters([
-      'cartList'
+      'cartList',
+      'cartNum'
     ])
   },
 
   methods: {
     ...mapMutations([
-      GET_CART_DATA
+      GET_CART_DATA,
     ]),
     forId(index) {
       return 'cheboxId' + index;
@@ -96,22 +96,36 @@ export default {
             if(res.code==200){
                 this.$api.cartList(item).then(res => {
                     if(res.code){
-                      console.log(res)
+                      console.log("购物车数据：",res.data.data)
+                      if(item.isBuy) {
                         this.GET_CART_DATA(res.data.data)
+                        this.calc()
+                      }
                     }
                 })
             }
         })
     },
-    allCheckbox(isCheck) {
+    allCheckbox(isCheck,self) {
+      console.log(222)
       this.cartList.forEach(item => {
         item.isBuy = !item.isBuy
+        console.log('1')
       })
       this.calc();
     },
     ischeckbox(item) {
       item.isBuy = !item.isBuy; 
       this.calc();
+      let flg = this.cartList.every(item => {
+          return item.isBuy
+      })
+      this.checked = flg?true:false
+      console.log(flg)
+      if(item.isBuy){
+        this.GET_CART_DATA(this.cartList)
+        this.calc()
+      }
     },
     calc() {
       this.totall=0
@@ -129,8 +143,9 @@ export default {
     },
     //删除
     deleCart(id) {
-      console.log(id)
-      this.$api.cartDel({'_id':id}).then(res => {
+      let user = window.sessionStorage.getItem('user')
+      console.log(user)
+      this.$api.cartDel({'_id':id,'user':user}).then(res => {
         if(res.code==200){
           Toast.success('删除成功！')
           this.getData()
@@ -144,15 +159,12 @@ export default {
         res.data.data.forEach(item =>{
           item.isBuy = false
         })
-        this.cartList = res.data.data
         this.GET_CART_DATA(res.data.data)
+        this.calc()
       }
     })
   
     }
-  },
-  computed: {
-    
   },
   created() {
     this.getData()

@@ -11,17 +11,24 @@
             <div class="IMG-warp">
                 <img src="@/assets/image/other/import.jpg" alt="">
             </div>
-            <van-tabs v-model="active" swipeable>
-                <van-tab title="标签 1" v-for="(item,ind) in 5" :key="ind">
+            <van-tabs v-model="active" swipeable v-if="data">
+                <van-tab :title="item.btnName" v-for="(item,ind) in data.specials.paramDto.specialNav.navTabList" :key="ind">
                     <div class="title">
-                        <img src="@/assets/image/other/xiuxian.jpg" alt="">
+                        <img :src="data.widgetsInstanceList[ind].titlePic" alt="">
                     </div>
                     <ul>
-                        <li v-for="(item,ind) in 8" :key="ind">
+                        <li v-for="(item,index) in data.widgetsInstanceList[ind]['widgetsInstanceList'][0]['productsList']" 
+                        :key="index"
+                        @click="goDetail(item)"
+                        >
                             <div class="item">
-                                <div class="top-img"><img src="@/assets/image/other/import1.jpg" alt=""> </div>
-                                <p>Sabava 越南沙巴哇芋头条100g（越南进口）</p>
-                                <p class="footer"> <span style="color:#df0f24">￥14.8</span> <span> <CarBtn></CarBtn></span></p>
+                                <div class="top-img"><img :src="item.url" alt=""> </div>
+                                <p style="height:1.066667rem;overflow:hidden">{{item.name}}</p>
+                                <p class="footer"> 
+                                    <span style="color:#df0f24">￥{{item.price}}</span> 
+                                    <span style="text-decoration:line-through;">￥{{item.mktprice}}</span>
+                                    <span> <CarBtn></CarBtn></span>
+                                </p>
                             </div>
                         </li>
                     </ul>
@@ -41,7 +48,11 @@ export default {
     components:{CarBtn},
     data() {
         return {
-        active: 0
+            active: 0,
+            data:{
+                specials:{paramDto:{specialNav:{navTabList:[]}}},
+                widgetsInstanceList:{}
+            },
         };
     },
     methods:{
@@ -52,12 +63,18 @@ export default {
             let bodyDistance=document.documentElement.scrollTop// 获取当前位置
             //根据距离修改显示隐藏
             let tab = document.querySelector('.van-tabs__wrap')
-            if(bodyDistance>=230){
+            if(bodyDistance>=230 && tab){
                 tab.style.position = 'fixed'
                 tab.style.top = '46px'
-            }else {
+            }else if(tab){
                 tab.style.position = 'static'
             }
+        },
+        goDetail(item) {
+            this.$router.push({
+                "name":"detail",
+                query:{imports:item.goodsId}
+            })
         }
     },
     mounted() {
@@ -66,7 +83,13 @@ export default {
         })
     },
     destroyed(){
-        window.removeEventListener('scroll')
+        // window.removeEventListener('scroll',)
+    },
+    created() {
+        this.$api.importProductsList().then(res => {
+            this.data = res.data[0]
+            console.log(this.data)
+        })
     }
 }
 </script>
@@ -105,11 +128,12 @@ export default {
             }
             ul{
                 padding-right: .1rem;
+                padding-bottom: .2rem;
                 li{
                     box-sizing: border-box;
                     width: 50%;
                     padding: .2rem 0 0 .1rem;
-                    
+                    line-height: .533333rem;
                     display: inline-block;
                     .top-img{
                         position: relative;
@@ -134,6 +158,12 @@ export default {
                         }
                     }
                 }
+            }
+        }
+        .van-nav-bar{
+            .van-icon{color: #fff}
+            .van-nav-bar__title{
+                color: #fff;
             }
         }
     }

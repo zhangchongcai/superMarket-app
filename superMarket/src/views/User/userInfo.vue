@@ -37,7 +37,7 @@
 <script>
 import { NavBar, CollapseItem ,Row, Col ,Collapse,Icon,Button,Toast} from 'vant';
 import {mapMutations} from 'vuex'
-import {GET_CART_DATA} from '@/newVuex/types'
+import {GET_CART_DATA,SET_CART_CARTNUM} from '@/newVuex/types'
 import Vue from 'vue'
 Vue.use(NavBar).use(Row).use(Col).use(Icon).use(Button).use(Toast);
 export default {
@@ -57,7 +57,8 @@ export default {
     },
     methods: {
         ...mapMutations([
-            GET_CART_DATA
+            GET_CART_DATA,
+            SET_CART_CARTNUM
         ]),
         onClickLeft() {
             this.$router.push({name:'home'})
@@ -68,7 +69,8 @@ export default {
         quit() {
             sessionStorage.removeItem("token");
             Toast.success('已注销！')
-            this.GET_CART_DATA = []
+            this.GET_CART_DATA([])
+            this.SET_CART_CARTNUM(0)
             this.$router.push({name:'home'})
         }
     }

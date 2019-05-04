@@ -8,7 +8,7 @@ import store from './vuex';
 import axios from 'axios';
 import api from './http';
 import Elemnt from 'element-ui';
-import './assets/fonts/iconfont.css'
+import 'src/assets/fonts/iconfont.css'
 // import 'mint-ui/lib/style.css';
 
 

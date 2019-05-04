@@ -9,8 +9,11 @@ const cartModel = require('../models/cartModel.js');
 
 Router.post("/add",(req,res)=>{
     let item = req.body;
+    // console.log(item)
+    console.log(item.user)
+    console.log(item._id)
     cartModel.find({user:item.user,_id:item._id}).then((resolved)=> {
-        console.log(resolved,'结果')
+        // console.log(resolved,'结果')
         if(resolved.length) {
         	let number = item.num + Number(resolved[0].num)
         	let num = item.newNum?item.newNum:number
@@ -26,6 +29,7 @@ Router.post("/add",(req,res)=>{
 		    }) 
         }else {
 		    cartModel.insertMany({
+                _id:item._id,
 		        user:item.user,
 			    goodsId:item.goodsId,
 			    productName:item.productName,
@@ -50,7 +54,7 @@ Router.post("/add",(req,res)=>{
     
 Router.post('/list',(req,res)=>{
     let data = req.body
-    console.log(data);
+    // console.log(data);
     var page = data.page?data.page:1;
     var limit =data.limit?data.limit:100;
     cartModel.find({user:data.user}).then(data=> {
@@ -76,9 +80,9 @@ Router.post('/mohu',(req,res)=>{
     var limit =parseInt(req.body.limit) ;
     var addition = req.body.addition;
     var reg = new RegExp(addition,'i')//不区分大小
-    console.log(addition,'条件')
-    console.log(page)
-    console.log(limit)
+    // console.log(addition,'条件')
+    // console.log(page)
+    // console.log(limit)
     var filter={
         $or: [  // 多字段同时匹配
           // {price: {$regex: addition.price}},// 
@@ -117,7 +121,7 @@ Router.post('/mohu',(req,res)=>{
 
 Router.post('/findOne',(req,res)=>{
     var _id = req.body._id;
-    console.log(req.body);
+    // console.log(req.body);
     cartModel.find({_id:_id})
     .then((resolved)=>{
         // console.log(resolved)
@@ -166,8 +170,9 @@ Router.post('/updataMany',(req,res)=>{
  */
 Router.post('/removeOne',(req,res)=>{
     var id =req.body._id;
+    let user = req.body.user
         //删除单个
-    cartModel.deleteOne({ _id: id ,user:item.user})
+    cartModel.deleteOne({ _id: id ,user:user})
         .then((resolved) => {
             if (resolved) {
                 res.send(uitl.sendData(200, "单个删除成功！", 1));

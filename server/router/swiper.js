@@ -50,9 +50,9 @@ Router.post("/add",(req,res)=>{
 Router.post('/list',(req,res)=>{
     let token = req.header('token')
     // console.log(token,'验证')
-    if(!verify(token)) {
-        return res.send(uitl.sendData(400,'token不通过',0))
-    }
+    // if(!verify(token)) {
+    //     return res.send(uitl.sendData(400,'token不通过',0))
+    // }
     SwiperModel.find().sort({'createTime':-1}).then(data => {
             res.send(uitl.sendData(200,"查询成功！",data));
     })    

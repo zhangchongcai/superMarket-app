@@ -34,7 +34,8 @@ export default {
 
     //-------详情------------
     imports.widgetsInstanceList[0]['productsList'].forEach(item => {
-      console.log(item.widgetId)
+      console.log(item.goodsId)
+      
     })
 
 

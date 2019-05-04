@@ -8,13 +8,12 @@ const importModel = require('../../models/importModel.js');
 
 Router.post("/add",(req,res)=>{
     item = req.body;
-    // console.log(data);
-    // var nowtime = new Date().getTime()*1;
-    // data.forEach(item => {
         importModel.insertMany({
-            Name:item.Name,
-            titlePic:item.titlePic,
-            widgetId:item.widgetId,
+            // Name:item.Name,
+            // titlePic:item.titlePic,
+            // widgetId:item.widgetId,
+            // widgetsInstanceList:item.widgetsInstanceList
+            specials:item.specials,
             widgetsInstanceList:item.widgetsInstanceList
         
         }).then((resolved)=>{
@@ -31,100 +30,18 @@ Router.post("/add",(req,res)=>{
 
 Router.post('/list',(req,res)=>{
     // var datas = JSON.parse(req.body.data);
-    let data = req.body
-    console.log(data);
-    var page = data.page?data.page:1;
-    var limit =data.limit?data.limit:20 ;
-    var addition = data.addition;
-    importModel.find(addition)
-    .then(data=> {
-        if(data){return data}
-    }).then(data=> {
-        importModel.find(addition).sort({'createTime':-1}).skip(parseInt(page-1)*limit).limit(limit)
+        importModel.find().sort({'_id':-1})
         .then((resolved)=>{
-            // console.log(resolved);
-            var array= {
-                totall:data.length,
-                pages:Math.ceil(data.length/limit),
-                nowpage:page,
-                limit:limit,
-                data:resolved
-            }
-           
-            res.send(uitl.sendData(200,"查询成功！",array));
-            
-        }).catch((err)=>{
-                console.log(err);
-                res.send(uitl.sendData(-1,"查询错误！",null));
-            });
-        })
-    })
-    
-    
-
-Router.post('/mohu',(req,res)=>{
-    var datas =req.body.data;
-    var page =parseInt(req.body.page) ;
-    var limit =parseInt(req.body.limit) ;
-    var addition = req.body.addition;
-    var reg = new RegExp(addition,'i')//不区分大小
-    importModel.find(
-        {
-            $or:[ //多条件，数组
-                {title:{$regex:reg}},
-                {price:{$regex:reg}},
-                {sortTitle:{$regex:reg}},
-                {time:{$regex:reg}},
-            ]
-        }
-        ).sort({'whatTime':-1})            //根据条件查询
-    .then((data)=>{
-        if(data){return data}
-    }).then((data)=>{
-        importModel.find({
-            $or:[ //多条件，数组
-                {title:{$regex:reg}},
-                {attribute:{$regex:reg}},
-                {sortTitle:{$regex:reg}},
-                {time:{$regex:reg}},
-            ]
-        }).skip(parseInt(page-1)*limit).limit(limit)
-        .then((resolved)=>{
-            // console.log(resolved);
-            var array= {
-                totall:data.length,
-                pages:Math.ceil(data.length/limit),
-                nowpage:page,
-                limit:limit,
-                data:resolved
-            }
-            res.send(uitl.sendData(1,"查询成功！",array));
+            res.send(uitl.sendData(200,"查询成功！",resolved));
             
         }).catch((err)=>{
             console.log(err);
             res.send(uitl.sendData(-1,"查询错误！",null));
         });
     })
-    .catch((err)=>{
-        console.log("第一次查询错误！"+err);
-    })
     
     
-});
 
-
-Router.post('/findOne',(req,res)=>{
-    var goodsId = req.body.goodsId;
-    // console.log(id);
-    importModel.find({goodsId:goodsId})
-    .then((resolved)=>{
-        // console.log(resolved)
-        return res.send(uitl.sendData(200,"单个查找成功",resolved));
-    })
-    .catch((err)=>{
-        console.log("查找单个失败"+err);
-    })
-})
 
 Router.post('/updataOne',(req,res)=>{
     var data = req.body;
